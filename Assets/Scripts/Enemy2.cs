@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy2 : MonoBehaviour
 {
     public float speed = 5.0f;
-    public float bounceTime = 1.0f;
+    public float bounceTime = 2.0f;
     float currentTime = 0.0f;
     Vector2 dir;
     private void Start()

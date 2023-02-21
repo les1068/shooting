@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     {
         transform.Find("FireTransform");
         FireTransform = transform.GetChild(0);
-        anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();               //Getcomponent는 성능에 문제가 있기 때문에 한번만 찾도록 코딩
         inputActions = new PlayerInputActions();
     }
 
