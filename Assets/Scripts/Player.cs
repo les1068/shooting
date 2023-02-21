@@ -7,7 +7,9 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    Transform FireTransform;
     public float speed = 10.0f;
+    public GameObject bullet;
 
     Animator anim;
     PlayerInputActions inputActions;
@@ -16,6 +18,8 @@ public class Player : MonoBehaviour
     // 이 게임 오브젝트가 생성완료 되었을 때 실행되는 함수
     private void Awake()
     {
+        transform.Find("FireTransform");
+        FireTransform = transform.GetChild(0);
         anim = GetComponent<Animator>();
         inputActions = new PlayerInputActions();
     }
@@ -55,6 +59,7 @@ public class Player : MonoBehaviour
         transform.position += Time.deltaTime * speed * inputDir;
         //transform.Translate(inputDir);
         //Time.deltaTime = 이전 프레임에서 현재 프레임까지의 시간
+        //inputDir = 입력받은값
     }
     private void OnBomb(InputAction.CallbackContext context)
     {
@@ -63,6 +68,9 @@ public class Player : MonoBehaviour
     private void OnFire(InputAction.CallbackContext context)
     {
         Debug.Log("Fire");
+        //Instantiate함수는 오브젝트를 추가하는 함수
+        GameObject obj = Instantiate(bullet);
+        obj.transform.position = FireTransform.position;
     }
     private void OnMoveInput(InputAction.CallbackContext context)
     {
