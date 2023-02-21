@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
     {
         transform.position += Time.deltaTime * speed * inputDir;
         //transform.Translate(inputDir);
+        //https://inyongs.tistory.com/18참고
         //Time.deltaTime = 이전 프레임에서 현재 프레임까지의 시간
         //inputDir = 입력받은값
     }
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Fire");
         //Instantiate함수는 오브젝트를 추가하는 함수
+        //https://velog.io/@ko0930/C-Unity-GetComponentInstantiateDestroyprefabInvoke참고
         GameObject obj = Instantiate(bullet);
         obj.transform.position = FireTransform.position;
     }

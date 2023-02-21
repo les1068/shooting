@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -10,19 +10,20 @@ public class Bullet : MonoBehaviour
     public float speed = 10.0f;
     void Start()
     {
-        //DestroyÇÔ¼ö´Â ¿ÀºêÁ§Æ®¸¦ »èÁ¦ÇÏ´Â ÇÔ¼ö
+        //Destroyí•¨ìˆ˜ëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ íŒŒê´´í•˜ëŠ” í•¨ìˆ˜
         Destroy(gameObject, 5.0f);
         Debug.Log("Start");
     }
     void Update()
     {
-        //ÃÊ´ç speedÀÇ ¼Óµµ·Î right¹æÇâÀ¸·Î ¿òÁ÷ÀÓ(·ÎÄÃ ÁÂÇ¥¸¦ ±âÁØÀ¸·Î ÇÑ ¹æÇâ) 
-        //localÁÂÇ¥¿Í WorldÁÂÇ¥
-        //localÁÂÇ¥ : "°¢ ¿ÀºêÁ§Æ®" º° ±âÁØÀ¸·Î ÇÑ ÁÂÇ¥°è
-        //WorldÁÂÇ¥ : "¸Ê"À» ±âÁØÀ¸·Î ÇÑ ÁÂÇ¥°è
+        //ì´ˆë‹¹ speedì˜ ì†ë„ë¡œ rightë°©í–¥ìœ¼ë¡œ ì›€ì§ì„(ë¡œì»¬ ì¢Œí‘œë¥¼ ê¸°ì¤€ìœ¼ë¡œ í•œ ë°©í–¥) 
+        //localì¢Œí‘œì™€ Worldì¢Œí‘œ
+        //localì¢Œí‘œ : "ê° ì˜¤ë¸Œì íŠ¸" ë³„ ê¸°ì¤€ìœ¼ë¡œ í•œ ì¢Œí‘œê³„
+        //Worldì¢Œí‘œ : "ë§µ"ì„ ê¸°ì¤€ìœ¼ë¡œ í•œ ì¢Œí‘œê³„
         //transform.position += Time.deltaTime * speed * Vector3.right;
         //transform.position += Time.deltaTime * speed * transform.right;
-       //transform.Translate(Time.deltaTime * speed * transform.right,Space.World);
+        //transform.Translate(Time.deltaTime * speed * transform.right,Space.World);
+        //https://nakedgang.tistory.com/52ì°¸ê³ 
         transform.Translate(Time.deltaTime * speed * Vector2.right); 
     }
 }
