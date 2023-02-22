@@ -62,13 +62,40 @@ public class Player : MonoBehaviour
         //Time.deltaTime = 이전 프레임에서 현재 프레임까지의 시간
         //inputDir = 입력받은값
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log($"충돌영역에 들어감 - 충돌 대상 : {collision.gameObject.name}");
+        
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        Debug.Log($"충돌영역에 나감 - 충돌 대상 : {collision.gameObject.name}");
+    }
+   /* private void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log("충돌영역에 접촉해 있으면서 움직이는 중");
+    }*/
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log($"트리거 안에 들어감 - 대상 트리거 : {collision.gameObject.name}");
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log($"트리거 안에 나감 - 대상 트리거 : {collision.gameObject.name}");
+    }
+    /*private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.Log("트리거 안에서 움직임");
+    }*/
     private void OnBomb(InputAction.CallbackContext context)
     {
         Debug.Log("Bomb");
     }
+    
     private void OnFire(InputAction.CallbackContext context)
     {
-        Debug.Log("Fire");
+        //Debug.Log("Fire");
         //Instantiate함수는 오브젝트를 추가하는 함수
         //https://velog.io/@ko0930/C-Unity-GetComponentInstantiateDestroyprefabInvoke참고
         GameObject obj = Instantiate(bullet);

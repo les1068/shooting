@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class Bullet : MonoBehaviour
 {
+    //명중 이펙트
+    public GameObject hitprefab;
     public float speed = 10.0f;
     void Start()
     {
@@ -24,5 +26,19 @@ public class Bullet : MonoBehaviour
         //transform.Translate(Time.deltaTime * speed * transform.right,Space.World);
         //https://nakedgang.tistory.com/52참고
         transform.Translate(Time.deltaTime * speed * Vector2.right); 
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("Enemy")) //부딪힌 게임오브젝트의 태그가 "Enemy"일때 처리
+        {
+            
+            Debug.Log($"총알이 {collision.gameObject.name}과 충돌");
+            
+            GameObject obj = Instantiate(hitprefab);                     //hit 이펙트 생성
+            obj.transform.position = collision.contacts[0].point;        //충돌 지점으로 이동 시키기
+            Destroy(gameObject);                                         //자기자신 사라지기
+
+            //if(collision.gameObject.tag =="Enemy") // 절대로 하지말것 더 느리고 메모리 많이 씀
+        }
     }
 }
