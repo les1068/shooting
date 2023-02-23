@@ -4,34 +4,32 @@ using UnityEngine;
 
 public class Enemy1 : MonoBehaviour
 {
-
     public float speed = 5.0f;
 
     float baseY;
     float dir = 1.0f;
     public float height = 3.0f;
 
-    // Start is called before the first frame update
     private void Start()
     {
-        baseY = transform.position.y;        //½ÃÀÛÇÒ¶§ ½ÃÀÛÇÑ ³ôÀÌ 
+        baseY = transform.position.y;   // ì‹œìž‘í•  ë•Œ ì‹œìž‘í•œ ë†’ì´ ê¸°ë¡
     }
-    // Update is called once per frame
-    void Update()
-    {
-        transform.Translate(Time.deltaTime * speed * -transform.right);
-        //transform.Translate(Time.deltaTime * speed * Vector3.left);
 
-        //ÀÌ °ÔÀÓ¿ÀºêÁ§Æ®ÀÇ yÀ§Ä¡°¡ ÀÏÁ¤ÀÌ»ó ¿Ã¶ó°¡°Å³ª ³»·Á°¡¸é ¹æÇâ º¯°æ 
-        transform.Translate(Time.deltaTime * speed * dir * transform.up);
-        if ((transform.position.y > baseY + height)|| (transform.position.y < baseY - height))
+    private void Update()
+    {
+        transform.Translate(Time.deltaTime* speed * -transform.right);      // ì™¼ìª½ìœ¼ë¡œ ì´ë™
+        transform.Translate(Time.deltaTime * speed * dir * transform.up);   // ìœ„ì•„ëž˜ë¡œ ì´ë™
+
+        // ì´ ê²Œìž„ì˜¤ë¸Œì íŠ¸ì˜ yìœ„ì¹˜ê°€ ì¼ì • ì´ìƒ ì˜¬ë¼ê°€ê±°ë‚˜ ë‚´ë ¤ê°€ë©´ ë°©í–¥ ë³€ê²½
+        if( (transform.position.y > baseY+height) || (transform.position.y < baseY - height) )
         {
-            dir = dir * -1; // dir *= -1.0f;
+            dir *= -1.0f;       // dir = dir * -1;
         }
-        //³í¸®¿¬»êÀÚ
-        // && (and¶ó°í ÀÐÀ½) : ¾ç º¯ÀÌ ¸ðµÎ trueÀÏ¶§¸¸ trueÀÌ´Ù.
-        // true && false = false
-        // || (or¶ó°í ÀÐÀ½) : ¾ç º¯Áß ÇÏ³ª¸¸ true¸é trueÀÌ´Ù.
-        // true || false = true
+
+        // ë…¼ë¦¬ ì—°ì‚°ìž
+        // && (andë¼ê³  ì½ìŒ) : ì–‘ ë³€ì´ ëª¨ë‘ trueì¼ë•Œë§Œ trueì´ë‹¤.
+        //   true && falseëŠ” false
+        // || (orë¼ê³  ì½ìŒ) : ì–‘ ë³€ ì¤‘ í•˜ë‚˜ë§Œ trueë©´ trueì´ë‹¤.
+        //   true || falseëŠ” true
     }
 }

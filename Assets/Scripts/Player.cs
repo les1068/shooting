@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine;
 
 public class Player : MonoBehaviour
 {
@@ -11,6 +7,7 @@ public class Player : MonoBehaviour
     public float speed = 10.0f;
     public GameObject bullet;
 
+    private int score = 0;
     Animator anim;
     PlayerInputActions inputActions;
     Vector3 inputDir = Vector3.zero;
@@ -46,7 +43,23 @@ public class Player : MonoBehaviour
         inputActions.Player.Move.canceled += OnMoveInput;
         inputActions.Player.Disable();
     }
+    public int Score
+    {
+        // get : 다른 곳에서 특정 값을 확인할 때 사용됨
+        // set : 다른 곳에서 특정 값을 설정할 때 사용됨
 
+        //get     
+        //{
+        //    return score;
+        //}
+        get => score;   // 위에 주석으로 처리된 get을 요약한 것
+
+        private set     // 앞에 private를 붙이면 자신만 사용가능
+        {
+            score = value;
+            Debug.Log($"점수 : {score}");
+        }
+    }
     // 시작할 때 한번 실행되는 함수
     void Start()
     {
@@ -62,20 +75,20 @@ public class Player : MonoBehaviour
         //Time.deltaTime = 이전 프레임에서 현재 프레임까지의 시간
         //inputDir = 입력받은값
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    /*private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log($"충돌영역에 들어감 - 충돌 대상 : {collision.gameObject.name}");
-        
+
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         Debug.Log($"충돌영역에 나감 - 충돌 대상 : {collision.gameObject.name}");
     }
-   /* private void OnCollisionStay2D(Collision2D collision)
-    {
-        Debug.Log("충돌영역에 접촉해 있으면서 움직이는 중");
-    }*/
+    *//* private void OnCollisionStay2D(Collision2D collision)
+     {
+         Debug.Log("충돌영역에 접촉해 있으면서 움직이는 중");
+     }*//*
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log($"트리거 안에 들어감 - 대상 트리거 : {collision.gameObject.name}");
@@ -84,7 +97,7 @@ public class Player : MonoBehaviour
     {
         Debug.Log($"트리거 안에 나감 - 대상 트리거 : {collision.gameObject.name}");
     }
-    /*private void OnTriggerStay2D(Collider2D collision)
+    *//*private void OnTriggerStay2D(Collider2D collision)
     {
         Debug.Log("트리거 안에서 움직임");
     }*/
@@ -92,9 +105,10 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Bomb");
     }
-    
+
     private void OnFire(InputAction.CallbackContext context)
     {
+        Debug.Log("Fire");
         //Debug.Log("Fire");
         //Instantiate함수는 오브젝트를 추가하는 함수
         //https://velog.io/@ko0930/C-Unity-GetComponentInstantiateDestroyprefabInvoke참고
@@ -104,7 +118,11 @@ public class Player : MonoBehaviour
     private void OnMoveInput(InputAction.CallbackContext context)
     {
         Vector2 dir = context.ReadValue<Vector2>();
-        anim.SetFloat("Input Y",dir.y); //애니메이터에 있는 input y값에 파라메터에 dir.y값을 준다.
+        anim.SetFloat("Input Y", dir.y); //애니메이터에 있는 input y값에 파라메터에 dir.y값을 준다.
         inputDir = dir;
+    }
+    public void AddScore(int plus)
+    {
+        Score += plus;
     }
 }

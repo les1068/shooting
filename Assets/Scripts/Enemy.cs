@@ -2,40 +2,76 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Enemy : MonoBehaviour
 {
-    public float speed = 1.0f;
-    public float amplitude = 1; // »çÀÎ °á°ú°ªÀ» ÁõÆø½ÃÅ³ º¯¼ö(À§¾Æ·¡ Â÷ÀÌ °áÁ¤)
-    public float frequency = 1; // »çÀÎ ±×·¡ÇÁ°¡ ÇÑ¹ø µµ´Âµ¥ °É¸®´Â ½Ã°£(°¡·Î Æø °áÁ¤)
-    [Range(0.1f,3.0f)] //º¯¼ö ¹üÀ§¸¦ (min,max)»çÀÌ·Î º¯°æ½ÃÅ°´Â ½½¶óÀÌ´õ Ãß°¡
+    public float speed = 1.0f;       // ì  ì´ë™ ì†ë„
 
+ 
+    [Range(0.1f, 3.0f)]              // ë³€ìˆ˜ ë²”ìœ„ë¥¼ (min,max)ì‚¬ì´ë¡œ ë³€ê²½ì‹œí‚¤ëŠ” ìŠ¬ë¼ì´ë” ì¶”ê°€
+   
+    public float amplitude = 1;      // ì‚¬ì¸ ê²°ê³¼ê°’ì„ ì¦í­ì‹œí‚¬ ë³€ìˆ˜(ìœ„ì•„ë˜ ì°¨ì´ ê²°ì •)
+    public float frequency = 1;      // ì‚¬ì¸ ê·¸ë˜í”„ê°€ í•œë²ˆ ë„ëŠ”ë° ê±¸ë¦¬ëŠ” ì‹œê°„(ê°€ë¡œ í­ ê²°ì •)
 
-    public GameObject explosion1prefab; //ÀûÀÌ ÅÍÁö´Â ÀÌÆåÆ®
+    public GameObject explosionPrefab;     // ì ì´ í„°ì§€ëŠ” ì´íŒ©íŠ¸
 
-    float timeElapsed = 0.0f;  //´©Àû½Ã°£ (»çÀÎ°è»ê¿ë)
-    float baseY; //Ã³À½ µîÀåÇÑ À§Ä¡
-    // Update is called once per frame
+    public int score = 10;                 // ì´ ì ì´ ì£½ì„ë•Œ í”Œë ˆì´ì–´ì—ê²Œ ì£¼ëŠ” ì ìˆ˜
+
+    float timeElapsed = 0.0f;             // ëˆ„ì  ì‹œê°„(ì‚¬ì¸ ê³„ì‚°ìš©)
+    float baseY;                          //ì ì´ ì²˜ìŒ ë“±ì¥í•œ ìœ„ì¹˜
+
+    bool isAlive = true;                  // ì‚´ì•„ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” í”Œë˜ê·¸(flag). trueë©´ ì‚´ì•„ìˆê³  falseë©´ ì£½ì–´ìˆë‹¤.
+
+    Player player = null;                // í”Œë ˆì´ì–´ì— ëŒ€í•œ ì°¸ì¡°
+
+    public Player TargetPlayer           // playerì— ì²˜ìŒ í•œë²ˆë§Œ ê°’ì„ ì„¤ì • ê°€ëŠ¥í•œ í”„ë¡œí¼í‹°. ì“°ê¸° ì „ìš©.
+    {
+        set
+        {
+            if (player == null)     // playerê°€ nullì¼ë•Œë§Œ ì„¤ì •
+            {
+                player = value;
+            }
+        }
+    }
+
     private void Start()
     {
-        baseY = transform.position.y;
-       
+        baseY = transform.position.y;   // ì‹œì‘í•  ë•Œ ë“±ì¥í•œ ìœ„ì¹˜ ì €ì¥        
     }
+
     private void Update()
     {
-        timeElapsed += Time.deltaTime * frequency;
-        float x = transform.position.x - speed * Time.deltaTime; //x´Â ÇöÀçÀ§Ä¡¿¡¼­ ¾à°£ ¿ŞÂÊÀ¸·Î ÀÌµ¿ 
-        float y =baseY + Mathf.Sin(timeElapsed)* amplitude; //y´Â ½ÃÀÛÀ§Ä¡¿¡¼­ sin°á°ú°ª¸¸Å­ º¯°æ 
-        transform.position= new Vector3(x,y,0); //±¸ÇÑ x,y¸¦ ÀÌ¿ëÇØ ³ôÀÌ »õ·Î ÁöÁ¤
+        timeElapsed += Time.deltaTime * frequency;  // frequencyì— ë¹„ë¡€í•´ì„œ ì‹œê°„ ì¦ê°€ê°€ ë¹ ë¥´ê²Œ ëœë‹¤
+        float x = transform.position.x - speed * Time.deltaTime;    // xëŠ” í˜„ì¬ ìœ„ì¹˜ì—ì„œ ì•½ê°„ ì™¼ìª½ìœ¼ë¡œ ì´ë™
+        float y = baseY + Mathf.Sin(timeElapsed) * amplitude;       // yëŠ” ì‹œì‘ìœ„ì¹˜ì—ì„œ sin ê²°ê³¼ê°’ë§Œí¼ ë³€ê²½
+
+        transform.position = new Vector3(x, y, 0);  // êµ¬í•œ x,yë¥¼ ì´ìš©í•´ ë†’ì´ ìƒˆë¡œ ì§€ì •
     }
-    
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))       //Bullet ÅÂ±×¸¦ °¡Áø ¿ÀºêÁ§Æ®¿Í Ãæµ¹ ÇßÀ» ¶§ ¸¸ ½ÇÇà
+        if(collision.gameObject.CompareTag("Bullet"))   // Bullet íƒœê·¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ì™€ ì¶©ëŒ í–ˆì„ ë•Œë§Œ ì‹¤í–‰
         {
-            GameObject obj = Instantiate(explosion1prefab);  //explosionÀÌÆåÆ® »ı¼º
-            obj.transform.position = transform.position;     //Ãæµ¹ ÁöÁ¡À¸·Î ÀÌµ¿ ½ÃÅ°±â
-            Destroy(gameObject);                             //ÀÚ±âÀÚ½Å »ç¶óÁö±â 
+            Die();
+        }
+    }
+
+
+    void Die()
+    {
+        if( isAlive )   // ì‚´ì•„ìˆì„ ë•Œë§Œ ì£½ì´ê¸°
+        {
+            isAlive = false;    // ì£½ì—ˆë‹¤ê³  í‘œì‹œ
+
+            //GameObject player = GameObject.Find("Player");                    // ì´ë¦„ìœ¼ë¡œ ì°¾ê¸°
+            //GameObject player = GameObject.FindGameObjectWithTag("Player");   // íƒœê·¸ë¡œ ì°¾ê¸°
+            //Player player = FindObjectOfType<Player>();                       // íƒ€ì…ìœ¼ë¡œ ì°¾ê¸°
+
+            player.AddScore(score);                         // í”Œë ˆì´ì–´ì—ê²Œ ì ìˆ˜ ì¶”ê°€
+
+            GameObject obj = Instantiate(explosionPrefab);  // í­ë°œ ì´íŒ©íŠ¸ ìƒì„±
+            obj.transform.position = transform.position;    // ìœ„ì¹˜ëŠ” ì ì˜ ìœ„ì¹˜ë¡œ ì„¤ì •
+            Destroy(gameObject);                            // ì  ì‚­ì œ
         }
     }
 }

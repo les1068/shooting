@@ -5,25 +5,27 @@ using UnityEngine;
 public class Enemy2 : MonoBehaviour
 {
     public float speed = 5.0f;
-    public float bounceTime = 2.0f;
+
+    public float bounceTime = 1.0f;
     float currentTime = 0.0f;
+
     Vector2 dir;
+
     private void Start()
     {
         dir = new Vector2(-1, 1);
-        dir.Normalize();                //¹æÇâ¸¸ ³²±ä´Ù.(=±æÀÌ°¡ 1ÀÌ´Ù.)
+        dir.Normalize();            // ë°©í–¥ë§Œ ë‚¨ê¸´ë‹¤.(=ê¸¸ì´ê°€ 1ì´ë‹¤.)
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        currentTime += Time.deltaTime; //½Ã°£ ´©ÀûÇÏ±â
-        if(currentTime > bounceTime)   //ÁöÁ¤µÈ ½Ã°£ Áö³ª¸é
+        currentTime += Time.deltaTime;  // ì‹œê°„ ê³„ì† ëˆ„ì í•˜ê¸°
+        if(currentTime>bounceTime)      // ì§€ì •ëœ ì‹œê°„ì´ ì§€ë‚˜ë©´
         {
-            currentTime= 0.0f;         //½Ã°£ ÃÊ±âÈ­ÇÏ°í
-            dir.y = -dir.y;            //¹æÇâµÚÁı±â
+            currentTime = 0.0f;         // ì‹œê°„ ì´ˆê¸°í™”í•˜ê³ 
+            dir.y = -dir.y;             // ë°©í–¥ ë’¤ì§‘ê¸°
         }
-        transform.Translate(Time.deltaTime* speed*dir);
-        
+
+        transform.Translate(Time.deltaTime * speed * dir);
     }
 }

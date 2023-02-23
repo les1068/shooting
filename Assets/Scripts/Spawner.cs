@@ -2,56 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// °ÔÀÓ ¿ÀºêÁ§Æ®¸¦ ÁÖ±âÀûÀ¸·Î »ı¼ºÇÒ Å¬·¡½º
+// ê²Œì„ ì˜¤ë¸Œì íŠ¸ë¥¼ ì£¼ê¸°ì ìœ¼ë¡œ ìƒì„±í•  í´ë˜ìŠ¤
 public class Spawner : MonoBehaviour
 {
-    //»ı¼ºÇÒ °ÔÀÓ ¿ÀºêÁ§Æ®
-    public GameObject spawnprefab;
-    
-    public float minY = -4; //»ı¼ºÇÒ À§Ä¡(ÃÖ¼Ò°ª)
-    public float maxY = 4;  //»ı¼ºÇÒ À§Ä¡(ÃÖ´ñ°ª)
-    //½Ã°£ °£°İ
-    public float interval = 5.0f;
+    public GameObject spawnPrefab;    // ìƒì„±í•  ê²Œì„ ì˜¤ë¸Œì íŠ¸
 
+    public float minY = -4;    // ìƒì„±í•  ìœ„ì¹˜(ìµœì†Œê°’)
+
+    public float maxY = 4;  // ìƒì„±í•  ìœ„ì¹˜(ìµœëŒ€ê°’)
+
+    public float interval = 1.0f;   // ìƒì„± ì‹œê°„ ê°„ê²©
     //WaitForSeconds wait;
+
+    Player player = null;  // ê²Œì„ ë‚´ì˜ í”Œë ˆì´ì–´ì— ëŒ€í•œ ì°¸ì¡°
+
     private void Start()
     {
-       // Wait =new WaitForSeconds(interval); //°ÔÀÓµµÁß¿¡ intervalÀÌ º¯ÇÏÁö ¾Ê´Â´Ù¸é ¹Ì¸® ¸¸µé¾î µÎ´Â
-        
-        //½ÃÀÛÇÒ ¶§ Spawn ÄÚ·çÆ¾ ½ÃÀÛ
-        StartCoroutine(Spawn());
+        //wait = new WaitForSeconds(interval);  // ê²Œì„ ì‹¤í–‰ ë„ì¤‘ì— intervalì´ ë³€í•˜ì§€ ì•ŠëŠ”ë‹¤ë©´ ë¯¸ë¦¬ ë§Œë“¤ì–´ ë‘ëŠ” ê²ƒì´ ì¢‹ë‹¤.
+
+        player = FindObjectOfType<Player>();    // í”Œë ˆì´ì–´ë¥¼ ë¯¸ë¦¬ ì°¾ì•„ ë†“ê¸°
+                
+        StartCoroutine(Spawn());    // ì‹œì‘í•  ë•Œ Spawn ì½”ë£¨í‹´ ì‹œì‘
     }
 
-   
-    IEnumerator Spawn()  //"¡Ú¡Ú¿ÀºêÁ§Æ®¸¦ ÁÖ±âÀûÀ¸·Î »ı¼ºÇÏ´Â ÄÚ·çÆ¾"
+
+    IEnumerator Spawn()  // ì˜¤ë¸Œì íŠ¸ë¥¼ ì£¼ê¸°ì ìœ¼ë¡œ ìƒì„±í•˜ëŠ” ì½”ë£¨í‹´
     {
-        while(true)    //¹«ÇÑ ·çÇÁ
+        while(true)     // ë¬´í•œ ë°˜ë³µ(ë¬´í•œë£¨í”„)
         {
-            //»ı¼ºÇÏ°í »ı¼ºÇÑ ¿ÀºêÁ§Æ®¸¦ ½ºÆ÷³ÊÀÇ ÀÚ½ÄÀ¸·Î ¸¸µé±â
-            GameObject obj = Instantiate(spawnprefab, transform); 
-            //obj.transform.position = transform.position;
+            // ìƒì„±í•˜ê³  ìƒì„±í•œ ì˜¤ë¸Œì íŠ¸ë¥¼ ìŠ¤í¬ë„ˆì˜ ìì‹ìœ¼ë¡œ ë§Œë“¤ê¸°
+            GameObject obj = Instantiate(spawnPrefab, transform);
+            float r = Random.Range(minY, maxY);         // ëœë¤í•˜ê²Œ ì ìš©í•  ë†’ì´ êµ¬í•˜ê³ 
+            obj.transform.Translate(Vector3.up * r);    // ë†’ì´ ì ìš©
             
-            float r = Random.Range(minY, maxY); //·£´ıÇÏ°Ô Àû¿ëÇÒ ³ôÀÌ ±¸ÇÔ
-            obj.transform.Translate(Vector3.up *r); //³ôÀÌ Àû¿ë
+            Enemy enemy = obj.GetComponent<Enemy>();    // ìƒì„±í•œ ê²Œì„ì˜¤ë¸Œì íŠ¸ì—ì„œ Enemy ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+            enemy.TargetPlayer = player;                // Enemyì— í”Œë ˆì´ì–´ ì„¤ì •
 
             //yield return wait;
-            yield return new WaitForSeconds(interval); //interval ¸¸Å­ ´ë±â
-
+            yield return new WaitForSeconds(interval);  // ì¸í„°ë²Œë§Œí¼ ëŒ€ê¸°
         }
     }
 
-    private void OnDrawGizmos() //¾ÀÃ¢¿¡ °³¹ß¿ë Á¤º¸¸¦ ±×¸®´Â ÇÔ¼ö
+    private void OnDrawGizmos()  // ì”¬ì°½ì— ê°œë°œìš© ì •ë³´ë¥¼ ê·¸ë¦¬ëŠ” í•¨ìˆ˜
     {
-        Gizmos.color = Color.green; //°ÔÀÓ ÀüÃ¼ÀûÀ¸·Î »ö»ó ÁöÁ¤µÊ
-        //Gizmos.color = new Color(1,0,0); //RGB °ªÀ¸·Î »ö»ó³ÖÀ»¶§
+        Gizmos.color = Color.green;             // ê²Œì„ ì „ì²´ì ìœ¼ë¡œ ìƒ‰ìƒ ì§€ì •ë¨
+        // Gizmos.color = new Color(0, 1, 0);   // rgbê°’ìœ¼ë¡œ ìƒ‰ìƒì„ ë§Œë“¤ ìˆ˜ë„ ìˆë‹¤.
         
-        //½ºÆù ÁöÁ¡À» ¼±À¸·Î ±ß±â
+        // ìŠ¤í° ì˜ì—­ì„ íë¸Œë¡œ ê·¸ë¦¬ê¸°
+        Gizmos.DrawWireCube(transform.position, 
+            new Vector3(1, Mathf.Abs(maxY) + Mathf.Abs(minY) + 2, 1));
+    }
+
+    private void OnDrawGizmosSelected()  // ì”¬ì°½ì— ê°œë°œìš© ì •ë³´ë¥¼ ê·¸ë¦¬ëŠ” í•¨ìˆ˜(ì„ íƒëœ ê²Œì„ ì˜¤ë¸Œì íŠ¸ë§Œ ê·¸ë¦´ë•Œ)
+    {
+        Gizmos.color = Color.red;
+
+        // ìŠ¤í° ì§€ì ì„ ì„ ìœ¼ë¡œ ê¸‹ê¸°
         Vector3 from = transform.position + Vector3.up * minY;
         Vector3 to = transform.position + Vector3.up * maxY;
         Gizmos.DrawLine(from, to);
-
-        Gizmos.DrawWireCube(transform.position,new Vector3(1, Mathf.Abs(maxY)+Mathf.Abs(minY)+2 , 1));
-
     }
-
 }

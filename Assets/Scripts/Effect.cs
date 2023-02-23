@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))] // ÀÌ ½ºÅ©¸³Æ®¸¦ °¡Áö´Â °ÔÀÓ ¿ÀºêÁ§Æ®´Â ¹İµå½Ã animator¸¦ °¡Áö°Ô µÇ¾îÀÖ´Ù.
+// ì´ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ê°€ì§€ëŠ” ê²Œì„ ì˜¤ë¸Œì íŠ¸ëŠ” ë°˜ë“œì‹œ Animatorë¥¼ ê°€ì§€ê²Œ ë˜ì–´ìˆë‹¤.
+[RequireComponent(typeof(Animator))]
 public class Effect : MonoBehaviour
 {
     Animator anim;
 
     private void Awake()
     {
-        anim = GetComponent<Animator>(); 
-        
+        anim = GetComponent<Animator>();
     }
+
     private void Start()
     {
         Destroy(gameObject, anim.GetCurrentAnimatorClipInfo(0)[0].clip.length);
-
     }
 }
