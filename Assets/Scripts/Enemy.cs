@@ -5,8 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float speed = 1.0f;       // 적 이동 속도
-
- 
+     
     [Range(0.1f, 3.0f)]              // 변수 범위를 (min,max)사이로 변경시키는 슬라이더 추가
    
     public float amplitude = 1;      // 사인 결과값을 증폭시킬 변수(위아래 차이 결정)
@@ -27,7 +26,7 @@ public class Enemy : MonoBehaviour
     {
         set
         {
-            if (player == null)     // player가 null일때만 설정
+            if (player == null)         // player가 null일때만 설정
             {
                 player = value;
             }
@@ -41,16 +40,16 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        timeElapsed += Time.deltaTime * frequency;  // frequency에 비례해서 시간 증가가 빠르게 된다
+        timeElapsed += Time.deltaTime * frequency;                  // frequency에 비례해서 시간 증가가 빠르게 된다
         float x = transform.position.x - speed * Time.deltaTime;    // x는 현재 위치에서 약간 왼쪽으로 이동
         float y = baseY + Mathf.Sin(timeElapsed) * amplitude;       // y는 시작위치에서 sin 결과값만큼 변경
 
-        transform.position = new Vector3(x, y, 0);  // 구한 x,y를 이용해 높이 새로 지정
+        transform.position = new Vector3(x, y, 0);                  // 구한 x,y를 이용해 높이 새로 지정
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Bullet"))   // Bullet 태그를 가진 오브젝트와 충돌 했을 때만 실행
+        if(collision.gameObject.CompareTag("Bullet"))               // Bullet 태그를 가진 오브젝트와 충돌 했을 때만 실행
         {
             Die();
         }
@@ -63,9 +62,9 @@ public class Enemy : MonoBehaviour
         {
             isAlive = false;    // 죽었다고 표시
 
-            //GameObject player = GameObject.Find("Player");                    // 이름으로 찾기
-            //GameObject player = GameObject.FindGameObjectWithTag("Player");   // 태그로 찾기
-            //Player player = FindObjectOfType<Player>();                       // 타입으로 찾기
+            //GameObject player = GameObject.Find("Player");                    // 이름으로 오브젝트 찾기
+            //GameObject player = GameObject.FindGameObjectWithTag("Player");   // 태그로 오브젝트 찾기
+            //Player player = FindObjectOfType<Player>();                       // 타입으로 오브젝트 찾기
 
             player.AddScore(score);                         // 플레이어에게 점수 추가
 
