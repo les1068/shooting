@@ -2,14 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.Threading;
 
 public class ScoreBoard : MonoBehaviour
 {
-    public float scoreUpSpeed = 50.0f;      // 점수가 올라가는 속도
-    float currentScore = 0;                 // UI에서 보이는 점수
-    int tagetScore = 0;                     // 실제 플레이어가 가지는 점수
-    TextMeshProUGUI score;                  // 점수를 출력할 UI text
+    /// <summary>
+    /// 점수가 올라가는 속도
+    /// </summary>
+    public float scoreUpSpeed = 50.0f;
+
+    /// <summary>
+    /// 현재 UI에서 보이는 점수
+    /// </summary>
+    float currentScore = 0;
+
+    /// <summary>
+    /// 실제 플레이어가 가지고 있는 점수
+    /// </summary>
+    int targetScore = 0;
+
+    /// <summary>
+    /// 점수를 출력할 UI text
+    /// </summary>
+    TextMeshProUGUI score;
 
     private void Awake()
     {
@@ -19,24 +33,31 @@ public class ScoreBoard : MonoBehaviour
 
     private void Start()
     {
-        score.text = "0";
-        Player player = FindObjectOfType<Player>();
-        player.onScoreChange += ScoreUpdate;           // player의 onScoreChange 델리게이트가 실행될 때 ScoreUpdate를 실행해라
+        Player player = FindObjectOfType<Player>();     // 임시로 플레이어 가져오기
+        // player의 onScoreChange 델리게이트가 실행될 때 RefreshScore를 실행해라
+        player.onScoreChange += ScoreUpdate;
 
-        score.text = currentScore.ToString();          // 초기값 설정
+        score.text = currentScore.ToString();   // 초기값 설정
     }
+
     private void Update()
     {
-        if(currentScore< tagetScore)                       // CurrentScore가 Targetscore보다 작으면
-        {  
-            currentScore += Time.deltaTime * scoreUpSpeed; // CurrentScore를 초당 scoreUpSpeed씩 증가시킨다.
-            currentScore = Mathf.Min(currentScore, tagetScore);  // CurrentScore의 최대치는 tagetScore
-            score.text = $"{currentScore:f0}";               // UI에 출력할 때 소수점은 0개씩 출력한다.(소수점 출력안함)
-            
+        if( currentScore < targetScore )        // currentScore가 targetScore보다 작으면
+        {
+            // currentScore를 초당 scoreUpSpeed씩 증가시킨다.
+            currentScore += Time.deltaTime * scoreUpSpeed;
+            currentScore = Mathf.Min(currentScore, targetScore);  // currentScore의 최대치는 targetScore
+            score.text = $"{currentScore:f0}";  // UI에 출력할 때 소수점은 0개만 출력한다.(소수점 출력안함)
         }
     }
-    void ScoreUpdate(int newScore)                         // 목표점수를 새점수로 설정
+
+    /// <summary>
+    /// 목표 점수를 새 점수로 설정
+    /// </summary>
+    /// <param name="newScore">새 점수</param>
+    void ScoreUpdate(int newScore)
     {
-        tagetScore = newScore;
+        targetScore = newScore;
     }
+
 }

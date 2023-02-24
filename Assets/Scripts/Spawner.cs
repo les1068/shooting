@@ -5,16 +5,16 @@ using UnityEngine;
 // 게임 오브젝트를 주기적으로 생성할 클래스
 public class Spawner : MonoBehaviour
 {
-    public GameObject spawnPrefab;    // 생성할 게임 오브젝트
+    public GameObject spawnPrefab;  // 생성할 게임 오브젝트
 
-    public float minY = -4;          // 생성할 위치(최소값)
+    public float minY = -4;  // 생성할 위치(최소값)
 
-    public float maxY = 4;          // 생성할 위치(최대값)
+    public float maxY = 4;  // 생성할 위치(최대값)
 
-    public float interval = 1.0f;   // 생성 시간 간격
+    public float interval = 1.0f;  // 생성 시간 간격
     //WaitForSeconds wait;
 
-    Player player = null;           // 게임 내의 플레이어에 대한 참조
+    Player player = null;  // 게임 내의 플레이어에 대한 참조
 
     private void Start()
     {
@@ -22,12 +22,11 @@ public class Spawner : MonoBehaviour
 
         player = FindObjectOfType<Player>();    // 플레이어를 미리 찾아 놓기
                 
-        StartCoroutine(Spawn());                // 시작할 때 Spawn 코루틴 시작
+        StartCoroutine(Spawn());    // 시작할 때 Spawn 코루틴 시작
     }
 
-
     IEnumerator Spawn()  // 오브젝트를 주기적으로 생성하는 코루틴
-    {
+    {  
         while(true)     // 무한 반복(무한루프)
         {
             // 생성하고 생성한 오브젝트를 스포너의 자식으로 만들기
@@ -37,14 +36,13 @@ public class Spawner : MonoBehaviour
             
             Enemy enemy = obj.GetComponent<Enemy>();    // 생성한 게임오브젝트에서 Enemy 컴포넌트 가져오기
             enemy.TargetPlayer = player;                // Enemy에 플레이어 설정
-            
+
             //yield return wait;
-            float f = Random.Range(1,5);         // 1~5의 랜덤               
-            yield return new WaitForSeconds(f);  // f만큼 대기
+            yield return new WaitForSeconds(interval);  // 인터벌만큼 대기
         }
     }
 
-    private void OnDrawGizmos()                 // 씬창에 개발용 정보를 그리는 함수
+    private void OnDrawGizmos()  // 씬창에 개발용 정보를 그리는 함수
     {
         Gizmos.color = Color.green;             // 게임 전체적으로 색상 지정됨
         // Gizmos.color = new Color(0, 1, 0);   // rgb값으로 색상을 만들 수도 있다.
@@ -56,7 +54,7 @@ public class Spawner : MonoBehaviour
 
     private void OnDrawGizmosSelected()  // 씬창에 개발용 정보를 그리는 함수(선택된 게임 오브젝트만 그릴때)
     {
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.red;
 
         // 스폰 지점을 선으로 긋기
         Vector3 from = transform.position + Vector3.up * minY;
