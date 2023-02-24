@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  fireInterval: 0.5
   bullet: {fileID: 4689776049102722296, guid: 3014ed348abb07c4ea61cb2469a38cd3, type: 3}
 --- !u!95 &3437175952084198763
 Animator:

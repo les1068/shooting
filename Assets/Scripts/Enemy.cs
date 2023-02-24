@@ -4,55 +4,26 @@ using UnityEngine;
 
 public class Enemy : PoolObject
 {
-    /// <summary>
-    /// 적 이동 속도
-    /// </summary>
+
     public float speed = 1.0f;
 
-    /// <summary>
-    /// 적 위아래 이동 정도(비율)
-    /// </summary>
     [Range(0.1f, 3.0f)]         // 변수 범위를 (min,max)사이로 변경시키는 슬라이더 추가
     public float amplitude = 1; // 사인 결과값을 증폭시킬 변수(위아래 차이 결정)
 
-    /// <summary>
-    /// 위아래로 한번 움직이는데 걸리는 거리(비율)
-    /// </summary>
     public float frequency = 1; // 사인 그래프가 한번 도는데 걸리는 시간(가로 폭 결정)
 
-    /// <summary>
-    /// 적이 터지는 이팩트
-    /// </summary>
-    public GameObject explosionPrefab;
+    public GameObject explosionPrefab;  // 적이 터지는 이팩트
 
-    /// <summary>
-    /// 이 적이 죽을때 플레이어에게 주는 점수
-    /// </summary>
-    public int score = 10;
+    public int score = 10;     // 이 적이 죽을때 플레이어에게 주는 점수
 
-    /// <summary>
-    /// 누적 시간(사인 계산용)
-    /// </summary>
-    float timeElapsed = 0.0f;
+    float timeElapsed = 0.0f;  // 누적 시간(사인 계산용)
+     
+    float baseY;              // 처음 등장한 위치
 
-    /// <summary>
-    /// 처음 등장한 위치
-    /// </summary>
-    float baseY;
+    bool isAlive = true;      // 살아있는지 여부를 나타내는 플래그(flag). true면 살아있고 false면 죽어있다.
 
-    /// <summary>
-    /// 살아있는지 여부를 나타내는 플래그(flag). true면 살아있고 false면 죽어있다.
-    /// </summary>
-    bool isAlive = true;
-
-    /// <summary>
-    /// 플레이어에 대한 참조
-    /// </summary>
-    Player player = null;
-
-    /// <summary>
-    /// player에 처음 한번만 값을 설정 가능한 프로퍼티. 쓰기 전용.
-    /// </summary>
+    Player player = null;     // 플레이어에 대한 참조
+    // player에 처음 한번만 값을 설정 가능한 프로퍼티. 쓰기 전용.
     public Player TargetPlayer
     {
         set
@@ -78,11 +49,7 @@ public class Enemy : PoolObject
         transform.position = new Vector3(x, y, 0);  // 구한 x,y를 이용해 높이 새로 지정
     }
 
-    /// <summary>
-    /// 충돌 했을 때 실행되는 이벤트 함수
-    /// </summary>
-    /// <param name="collision">충돌 정보</param>
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)  // 충돌 했을 때 실행되는 이벤트 함수
     {
         if(collision.gameObject.CompareTag("Bullet"))   // Bullet 태그를 가진 오브젝트와 충돌 했을 때만 실행
         {
@@ -90,11 +57,8 @@ public class Enemy : PoolObject
         }
     }
 
-    /// <summary>
-    /// 죽었을 때 실행되는 함수
-    /// </summary>
-    void Die()
-    {
+    void Die()  // 죽었을 때 실행되는 함수
+    {  
         if( isAlive )   // 살아있을 때만 죽이기
         {
             isAlive = false;    // 죽었다고 표시

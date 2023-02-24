@@ -32,12 +32,10 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject
         GenerateObjects(0, poolSize, pool);     // 첫번째 풀 생성
     }
 
-    /// 오브젝트를 생성하고 배열에 추가 하는 함수
- 
-    /// <param name="start">새로 생성한 오브젝트가 들어가기 시작할 인덱스</param>
-    /// <param name="end">새로 생성한 오브젝트가 마지막으로 들어가는 인덱스의 한칸 앞</param>
-    /// <param name="newArray">새로 생성한 오브젝트가 들어갈 배열(풀)</param>
-    void GenerateObjects(int start, int end, T[] newArray)
+    void GenerateObjects(int start, int end, T[] newArray)  // 오브젝트를 생성하고 배열에 추가 하는 함수
+       // start새로 생성한 오브젝트가 들어가기 시작할 인덱스
+       // end새로 생성한 오브젝트가 마지막으로 들어가는 인덱스의 한칸 앞
+       // newArray새로 생성한 오브젝트가 들어갈 배열(풀)
     {
         for(int i=start; i<end; i++)    // start부터 end까지 반복
         {
