@@ -1,75 +1,121 @@
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Singleton : MonoBehaviour  //½Ì±ÛÅæ : °´Ã¼¸¦ ÇÏ³ª¸¸ °¡Áö´Â µğÀÚÀÎ ÆĞÅÏ
+public class Singleton<T> : MonoBehaviour where T : Component //ì‹±ê¸€í†¤ : ê°ì²´ë¥¼ í•˜ë‚˜ë§Œ ê°€ì§€ëŠ” ë””ìì¸ íŒ¨í„´
 {
-    //static : "Á¤Àû" ÀÌ¶ó´Â ´Ü¾î·Î ¸¹ÀÌ ¹ø¿ªµÊ. ÇÁ·Î±×·¥ ½ÇÇà ¡Ú"Àü"¿¡ ¸Ş¸ğ¸® ÁÖ¼Ò°¡ °áÁ¤µÇ¾îÀÖ´Â °Í¿¡ ºÙÀÓ.
-    //         ¸â¹ö º¯¼ö¿¡ ºÙÀÌ¸é Å¬·¡½ºÀÇ ¸ğµç °´Ã¼¿¡¼­ °ø¿ëÀ¸·Î »ç¿ëÇÒ ¼ö ÀÖ´Â º¯¼ö°¡ µÈ´Ù.
-    //dynamic: "µ¿Àû" ÀÌ¶ó´Â ´Ü¾î·Î ¸¹ÀÌ ¹ø¿ªµÊ. ÇÁ·Î±×·¥ ½ÇÇà ¡Ú"Áß"¿¡ ¸Ş¸ğ¸® ÁÖ¼Ò°¡ °áÁ¤µÇ´Â °Í¿¡ ºÙÀÓ.
+    //static : "ì •ì " ì´ë¼ëŠ” ë‹¨ì–´ë¡œ ë§ì´ ë²ˆì—­ë¨. í”„ë¡œê·¸ë¨ ì‹¤í–‰ â˜…"ì „"ì— ë©”ëª¨ë¦¬ ì£¼ì†Œê°€ ê²°ì •ë˜ì–´ìˆëŠ” ê²ƒì— ë¶™ì„.
+    //         ë©¤ë²„ ë³€ìˆ˜ì— ë¶™ì´ë©´ í´ë˜ìŠ¤ì˜ ëª¨ë“  ê°ì²´ì—ì„œ ê³µìš©ìœ¼ë¡œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” ë³€ìˆ˜ê°€ ëœë‹¤.
+    //dynamic: "ë™ì " ì´ë¼ëŠ” ë‹¨ì–´ë¡œ ë§ì´ ë²ˆì—­ë¨. í”„ë¡œê·¸ë¨ ì‹¤í–‰ â˜…"ì¤‘"ì— ë©”ëª¨ë¦¬ ì£¼ì†Œê°€ ê²°ì •ë˜ëŠ” ê²ƒì— ë¶™ì„.
 
-    private static Singleton instance;    // ½Ì±ÛÅæ¿ë °´Ã¼. ´Ù¸¥ °÷¿¡¼­ Á¢±Ù ¸øÇÏ°Ô privateÀ¸·Î ¼³Á¤
-                                      
-    // ½Ì±ÛÅæ ÀĞ±âÀü¿ë ÇÁ·ÎÆÛÆ¼. ÀÌ ÇÁ·ÎÆÛÆ¼·Î¸¸ ½Ì±ÛÅæ¿¡ Á¢±Ù °¡´É.
-    public static Singleton Inst     
+    private bool initalized = false;              // ì´ˆê¸°í™”ë¥¼ ì§„í–‰í•œ í‘œì‹œë¥¼ ë‚˜íƒ€ë‚´ëŠ” í”Œë˜ê·¸
+
+    private const int NOT_SET = -1;               // ì„¤ì • ì•ˆë˜ì—ˆë‹¤ëŠ” ê²ƒì„ í‘œì‹œí•˜ê¸° ìœ„í•œ ìƒìˆ˜
+    private int mainSceneIndex = NOT_SET;         // ê²Œì„ì˜ ë©”ì¸ì”¬ì˜ ì¸ë±ìŠ¤
+
+    private static bool isShutDown = false;       // ì´ë¯¸ ì¢…ë£Œì²˜ë¦¬ì— ë“¤ì–´ê°”ëŠ”ì§€ í‘œì‹œí•˜ê¸° ìœ„í•œ ìš©ë„
+
+    private static T instance;    // ì‹±ê¸€í†¤ìš© ê°ì²´. ë‹¤ë¥¸ ê³³ì—ì„œ ì ‘ê·¼ ëª»í•˜ê²Œ privateìœ¼ë¡œ ì„¤ì •
+
+    // ì‹±ê¸€í†¤ ì½ê¸°ì „ìš© í”„ë¡œí¼í‹°. ì´ í”„ë¡œí¼í‹°ë¡œë§Œ ì‹±ê¸€í†¤ì— ì ‘ê·¼ ê°€ëŠ¥.
+    public static T Inst
     {
         get
         {
-            if(instance == null)      // Á¢±ÙÇÑ ½ÃÁ¡¿¡¼­ instance°¡ ÀÖ´ÂÁö ¾ø´ÂÁö È®ÀÎ
+            if (isShutDown)       // ì¢…ë£Œì²˜ë¦¬ì— ë“¤ì–´ê°„ ìƒí™©ì´ë©´
             {
-                // ¾øÀ¸¸é ¸¸µé¾îÁøÀûÀÌ ¾ø´Ù.
-
-                Singleton obj = FindObjectOfType<Singleton>();  // ¿¡µğÅÍ¿¡¼­ ¸¸µé¾îÁø°ÍÀÌ ÀÖ´ÂÁö È®ÀÎ
-                if(obj == null)                                 // nullÀÌ¸é ¿¡µğÅÍ¿¡¼­ ¸¸µé¾îÁø°Íµµ ¾ø´Ù.
-                {
-                    GameObject gameObj = new GameObject();      // ºó¿ÀºêÁ§Æ® »ı¼º
-                    gameObj.name = "Singletoin";                // ÀÌ¸§ º¯°æÇÏ°í
-                    obj = gameObj.AddComponent<Singleton>();          // ½Ì±ÛÅæÀ» ÄÄÆ÷³ÍÆ®·Î Ãß°¡
-                }
-                instance = obj;                                 // ¾ø¾î¼­ »õ·Î ¸¸µç °ÍÀÌµç ¿¡µğÅÍ°¡ ¸¸µé¾î ³õ¾Ò´ø °ÍÀÌµç instance¿¡ ÀúÀå
-                DontDestroyOnLoad(obj.gameObject);              // ¾ÀÀÌ ´İÈ÷´õ¶óµµ °ÔÀÓ ¿ÀºêÁ§Æ®°¡ »èÁ¦µÇÁö ¾Ê°Ô ¼³Á¤
+                Debug.LogWarning($"{typeof(T)} ì‹±ê¸€í†¤ì€ ì´ë¯¸ ì‚­ì œë˜ì—ˆë‹¤.");  // ì´ ì½”ë“œëŠ” ìˆ˜í–‰ë˜ì§€ ì•Šì•„ì•¼ í•œë‹¤.(ì´ê²Œ ëœ¨ë©´ ì‚¬ìš©í•œ ê³³ì—ì„œ ì½”ë“œë¥¼ ì˜ëª» ë§Œë“  ê²ƒ)
+                return null;      // null ë¦¬í„´
             }
-            return instance;            // instance ¸®ÅÏ(¾øÀ¸¸é »õ·Î ¸¸µé¾ú°í ÀÖ¾úÀ¸¸é ÀÖ´ø °Í, ±×·¡¼­ ¹«Á¶°Ç nullÀÌ ¾Æ´Ñ °ªÀÌ ¸®ÅÏµÈ´Ù.)
+            if (instance == null)      // ì ‘ê·¼í•œ ì‹œì ì—ì„œ instanceê°€ ìˆëŠ”ì§€ ì—†ëŠ”ì§€ í™•ì¸
+            {
+                // ì—†ìœ¼ë©´ ë§Œë“¤ì–´ì§„ì ì´ ì—†ë‹¤.
+
+                T obj = FindObjectOfType<T>();  // ì—ë””í„°ì—ì„œ ë§Œë“¤ì–´ì§„ê²ƒì´ ìˆëŠ”ì§€ í™•ì¸
+                if (obj == null)                 // nullì´ë©´ ì—ë””í„°ì—ì„œ ë§Œë“¤ì–´ì§„ê²ƒë„ ì—†ë‹¤.
+                {
+                    GameObject gameObj = new GameObject();      // ë¹ˆì˜¤ë¸Œì íŠ¸ ìƒì„±
+                    gameObj.name = typeof(T).Name;              // ì´ë¦„ ë³€ê²½í•˜ê³ 
+                    obj = gameObj.AddComponent<T>();            // ì‹±ê¸€í†¤ì„ ì»´í¬ë„ŒíŠ¸ë¡œ ì¶”ê°€
+                }
+                instance = obj;                                 // ì—†ì–´ì„œ ìƒˆë¡œ ë§Œë“  ê²ƒì´ë“  ì—ë””í„°ê°€ ë§Œë“¤ì–´ ë†“ì•˜ë˜ ê²ƒì´ë“  instanceì— ì €ì¥
+                DontDestroyOnLoad(obj.gameObject);              // ì”¬ì´ ë‹«íˆë”ë¼ë„ ê²Œì„ ì˜¤ë¸Œì íŠ¸ê°€ ì‚­ì œë˜ì§€ ì•Šê²Œ ì„¤ì •
+            }
+            return instance;            // instance ë¦¬í„´(ì—†ìœ¼ë©´ ìƒˆë¡œ ë§Œë“¤ì—ˆê³  ìˆì—ˆìœ¼ë©´ ìˆë˜ ê²ƒ, ê·¸ë˜ì„œ ë¬´ì¡°ê±´ nullì´ ì•„ë‹Œ ê°’ì´ ë¦¬í„´ëœë‹¤.)
         }
     }
     private void Awake()
     {
-        if(instance==null)           
+        if (instance == null)
         {
-            // instance°¡ nullÀÌ¸é Ã³À½ »ı¼º ¿Ï·áµÈ ½Ì±ÛÅæ °ÔÀÓ ¿ÀºêÁ§Æ®ÀÌ´Ù. (¾À¿¡ ¹èÄ¡µÇ¾î ÀÖ´Â °ÔÀÓ ¿ÀºêÁ§Æ®)
-            instance = this;                          // instance¿¡ ÀÌ ½Ì±ÛÅæ °´Ã¼ ±â·Ï
-            DontDestroyOnLoad(instance.gameObject);   // ¾ÀÀÌ ´İÈ÷´õ¶óµµ °ÔÀÓ ¿ÀºêÁ§Æ®°¡ »èÁ¦µÇÁö ¾Ê°Ô ¼³Á¤
+            // instanceê°€ nullì´ë©´ ì²˜ìŒ ìƒì„± ì™„ë£Œëœ ì‹±ê¸€í†¤ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì´ë‹¤. (ì”¬ì— ë°°ì¹˜ë˜ì–´ ìˆëŠ” ê²Œì„ ì˜¤ë¸Œì íŠ¸)
+            instance = this as T;                     // instanceì— ì´ ì‹±ê¸€í†¤ ê°ì²´ ê¸°ë¡
+            DontDestroyOnLoad(instance.gameObject);   // ì”¬ì´ ë‹«íˆë”ë¼ë„ ê²Œì„ ì˜¤ë¸Œì íŠ¸ê°€ ì‚­ì œë˜ì§€ ì•Šê²Œ ì„¤ì •
         }
         else
         {
-            // instance°¡ nullÀÌ ¾Æ´Ï¸é ÀÌ¹Ì ¸¸µé¾îÁø ½Ì±ÛÅæ °ÔÀÓ ¿ÀºêÁ§Æ®°¡ ÀÖ´Â »óÈ²
-            if(instance != this)       
+            // instanceê°€ nullì´ ì•„ë‹ˆë©´ ì´ë¯¸ ë§Œë“¤ì–´ì§„ ì‹±ê¸€í†¤ ê²Œì„ ì˜¤ë¸Œì íŠ¸ê°€ ìˆëŠ” ìƒí™©
+            if (instance != this)
             {
-                // AwakeµÇ±â Àü¿¡ ´Ù¸¥ ÄÚµå¿¡¼­ ÇÁ·ÎÆÛÆ¼¸¦ ÅëÇØ¼­ Á¢±Ù Çß°í ±×·¡¼­ »ı¼ºÀÌ µÈ »óÈ²
-                Destroy(this.gameObject);    // ³ªÁß¿¡ ¸¸µé¾îÁø ÀÚ±â ÀÚ½ÅÀ» »èÁ¦ÇÑ´Ù.
+                // Awakeë˜ê¸° ì „ì— ë‹¤ë¥¸ ì½”ë“œì—ì„œ í”„ë¡œí¼í‹°ë¥¼ í†µí•´ì„œ ì ‘ê·¼ í–ˆê³  ê·¸ë˜ì„œ ìƒì„±ì´ ëœ ìƒí™©
+                Destroy(this.gameObject);    // ë‚˜ì¤‘ì— ë§Œë“¤ì–´ì§„ ìê¸° ìì‹ ì„ ì‚­ì œí•œë‹¤.
             }
         }
     }
-}
-public class TestSingleton //ÀÏ¹İ ½Ì±ÛÅæ ¿¹Á¦
-{
-    private static TestSingleton instance = null; // staticº¯¼ö¸¦ ¸¸µé¾î¼­ °´Ã¼¸¦ ¸¸µéÁö ¾Ê°í »ç¿ëÇÒ ¼ö ÀÖ°Ô ¸¸µé±â.
-
-    public static TestSingleton Instance  // ´Ù¸¥°÷¿¡¼­ instance¸¦ ¼öÁ¤ÇÏÁö ¸øÇÏµµ·Ï ÀĞ±â Àü¿ë ÇÁ·ÎÆÛÆ¼ ¸¸µé±â.
+    private void OnEnable()
     {
-        get
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnApplicationQuit()
+    {
+        isShutDown = true;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)  // ì”¬ì´ ë¡œë“œë˜ë©° í˜¸ì¶œì´ ë˜ëŠ” í•¨ìˆ˜  //scene = ë¡œë“œëœ ì”¬, mode = ë¡œë“œ ëª¨ë“œ
+    {
+        preInitialize();
+        Initialize();
+    }
+    protected virtual void preInitialize() // ì´ ì‹±ê¸€í†¤ì´ ì²˜ìŒ ë§Œë“¤ì–´ì¡Œì„ ë•Œ ë‹¨ í•œë²ˆë§Œ ì‹¤í–‰ë  ì´ˆê¸°í™” í•¨ìˆ˜(Awake ì œì¼ ë§ˆì§€ë§‰ì— í˜¸ì¶œ)
+    {
+        if (!initalized)                                    //ì´ˆê¸°í™” ë˜ì§€ ì•Šì•˜ì„ ë•Œë§Œ ì‹¤í–‰
+        {
+            initalized = true;                              // ì´ˆê¸°í™” ë˜ì—ˆë‹¤ê³  í‘œì‹œí•´ì„œ ë‘ë²ˆ ì‹¤í–‰ë˜ì§€ ì•Šê²Œ í•˜ê¸°
+            Scene active = SceneManager.GetActiveScene();   // í˜„ì¬ ì”¬ ê°€ì ¸ì™€ì„œ
+            mainSceneIndex = active.buildIndex;             // ì¸ë±ìŠ¤ ì €ì¥í•´ ë†“ê¸°
+        }
+    }
+    protected virtual void Initialize() // ì´ ì‹±ê¸€í†¤ì´ ë§Œë“¤ì–´ì§€ê³  ì”¬ì´ ë¡œë“œ ë  ë•Œ ë§ˆë‹¤ ì‹¤í–‰ë  ì´ˆê¸°í™” í•¨ìˆ˜
+    {
+
+    }
+    public class TestSingleton //ì¼ë°˜ ì‹±ê¸€í†¤ ì˜ˆì œ
+    {
+        private static TestSingleton instance = null; // staticë³€ìˆ˜ë¥¼ ë§Œë“¤ì–´ì„œ ê°ì²´ë¥¼ ë§Œë“¤ì§€ ì•Šê³  ì‚¬ìš©í•  ìˆ˜ ìˆê²Œ ë§Œë“¤ê¸°.
+
+        public static TestSingleton Instance  // ë‹¤ë¥¸ê³³ì—ì„œ instanceë¥¼ ìˆ˜ì •í•˜ì§€ ëª»í•˜ë„ë¡ ì½ê¸° ì „ìš© í”„ë¡œí¼í‹° ë§Œë“¤ê¸°.
+        {
+            get
+            {
+
+                if (instance == null)      //ì²˜ìŒ ì ‘ê·¼í–ˆì„ ë•Œ newí•˜ê¸°.
+                {
+                    instance = new TestSingleton();
+                }
+                return instance;    // í•­ìƒ returnë  ë•Œ ê°’ì€ ì¡´ì¬í•œë‹¤.
+            }
+        }
+        private TestSingleton()  // ì¤‘ë³µìƒì„± ë°©ì§€ ëª©ì ,  privateìœ¼ë¡œ ìƒì„±ìë¥¼ ë§Œë“¤ì–´ ê¸°ë³¸ pubilcìƒì„±ìê°€ ìƒì„±ë˜ì§€ ì•Šê²Œ ë§‰ê¸°
+
         {
 
-            if (instance == null)      //Ã³À½ Á¢±ÙÇßÀ» ¶§ newÇÏ±â.
-            {
-                instance = new TestSingleton();   
-            }
-            return instance;    // Ç×»ó returnµÉ ¶§ °ªÀº Á¸ÀçÇÑ´Ù.
         }
     }
-    private TestSingleton()  // Áßº¹»ı¼º ¹æÁö ¸ñÀû,  privateÀ¸·Î »ı¼ºÀÚ¸¦ ¸¸µé¾î ±âº» pubilc»ı¼ºÀÚ°¡ »ı¼ºµÇÁö ¾Ê°Ô ¸·±â
-                             
-    {
 
-    }
+
 }

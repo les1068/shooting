@@ -53,11 +53,7 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject
         }
     }
 
-    /// <summary>
-    /// 풀에서 오브젝트 하나를 꺼내서 리턴해주는 함수
-    /// </summary>
-    /// <returns>레디큐에서 꺼낸 오브젝트</returns>
-    public T GetObject()
+    public T GetObject() // 풀에서 오브젝트 하나를 꺼내서 리턴해주는 함수
     {
         if( readyQueue.Count > 0 )  // 큐에 오브젝트가 있는지 확인
         {
