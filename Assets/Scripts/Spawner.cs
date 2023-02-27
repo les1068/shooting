@@ -32,7 +32,8 @@ public class Spawner : MonoBehaviour
             // 생성하고 생성한 오브젝트를 스포너의 자식으로 만들기
             GameObject obj = Instantiate(spawnPrefab, transform);
             float r = Random.Range(minY, maxY);         // 랜덤하게 적용할 높이 구하고
-            obj.transform.Translate(Vector3.up * r);    // 높이 적용
+            float f = Random.Range(1,5);
+            obj.transform.Translate(Vector3.up * f);    // 높이 적용
             
             Enemy enemy = obj.GetComponent<Enemy>();    // 생성한 게임오브젝트에서 Enemy 컴포넌트 가져오기
             enemy.TargetPlayer = player;                // Enemy에 플레이어 설정
