@@ -32,22 +32,22 @@ public class Player : MonoBehaviour
 
     public int Score     // 플레이어의 점수를 확인할 수 있는 프로퍼티(읽기 전용)
     {
-        // get : 다른 곳에서 특정 값을 확인할 때 사용됨
-        // set : 다른 곳에서 특정 값을 설정할 때 사용됨
+         //get : 다른 곳에서 특정 값을 확인할 때 사용됨
+         //set : 다른 곳에서 특정 값을 설정할 때 사용됨
 
-        //get     
-        //{
-        //    return score;
-        //}
+      /* get     
+        {
+            return score;
+        }*/
         get => score;   // 위에 주석으로 처리된 get을 요약한 것
 
         private set     // 앞에 private를 붙이면 자신만 사용가능
         {
             score = value;
-            //if( onScoreChange != null )
-            //{
-            //    onScoreChange.Invoke(score);
-            //}
+            /*if (onScoreChange != null)
+            {
+                onScoreChange.Invoke(score);
+            }*/
             onScoreChange?.Invoke(score);   // 위의 4줄을 줄인 것. 점수가 변경되었음을 사방에 알림.
 
             Debug.Log($"점수 : {score}");
@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
 
         transform.position += Time.deltaTime * speed * inputDir;*/
         transform.Translate(Time.deltaTime * speed * inputDir); // 초당 speed의 속도로 inputDir방향으로 이동
-/*        Time.deltaTime : 이전 프레임에서 현재 프레임까지의 시간
+     /* Time.deltaTime : 이전 프레임에서 현재 프레임까지의 시간
 
          30프레임 컴퓨터의 deltaTime = 1 / 30초 = 0.333333
          120프레임 컴퓨터의 deltaTime = 1 / 120초 = 0.0083333*/

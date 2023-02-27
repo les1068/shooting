@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Singleton<T> : MonoBehaviour where T : Component //싱글톤 : 객체를 하나만 가지는 디자인 패턴
+public class Singleton<T> : MonoBehaviour where T : Component // 싱글톤 : 객체를 하나만 가지는 디자인 패턴
 {
     //static : "정적" 이라는 단어로 많이 번역됨. 프로그램 실행 ★"전"에 메모리 주소가 결정되어있는 것에 붙임.
     //         멤버 변수에 붙이면 클래스의 모든 객체에서 공용으로 사용할 수 있는 변수가 된다.
@@ -64,13 +64,13 @@ public class Singleton<T> : MonoBehaviour where T : Component //싱글톤 : 객�
             }
         }
     }
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
     private void OnApplicationQuit()
     {
         isShutDown = true;
+    }
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     private void OnDisable()
     {
@@ -81,7 +81,7 @@ public class Singleton<T> : MonoBehaviour where T : Component //싱글톤 : 객�
         preInitialize();
         Initialize();
     }
-    protected virtual void preInitialize() // 이 싱글톤이 처음 만들어졌을 때 단 한번만 실행될 초기화 함수(Awake 제일 마지막에 호출)
+    protected virtual void preInitialize() // 이 싱글톤이 처음 만들어졌을 때 "단 한번만 실행"될 초기화 함수(Awake 제일 마지막에 호출)
     {
         if (!initalized)                                    //초기화 되지 않았을 때만 실행
         {
@@ -90,11 +90,11 @@ public class Singleton<T> : MonoBehaviour where T : Component //싱글톤 : 객�
             mainSceneIndex = active.buildIndex;             // 인덱스 저장해 놓기
         }
     }
-    protected virtual void Initialize() // 이 싱글톤이 만들어지고 씬이 로드 될 때 마다 실행될 초기화 함수
+    protected virtual void Initialize() // 이 싱글톤이 만들어지고 씬이 "로드 될 때 마다" 실행될 초기화 함수
     {
 
     }
-    public class TestSingleton //일반 싱글톤 예제
+    public class TestSingleton // 일반 싱글톤 예제
     {
         private static TestSingleton instance = null; // static변수를 만들어서 객체를 만들지 않고 사용할 수 있게 만들기.
 
@@ -111,11 +111,8 @@ public class Singleton<T> : MonoBehaviour where T : Component //싱글톤 : 객�
             }
         }
         private TestSingleton()  // 중복생성 방지 목적,  private으로 생성자를 만들어 기본 pubilc생성자가 생성되지 않게 막기
-
         {
 
         }
     }
-
-
 }

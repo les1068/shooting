@@ -25,5 +25,4 @@ public class Test_Singelton : Test_Base
     {
         Factory.Inst.GetExplosionEffect();
     }
-   
 }
