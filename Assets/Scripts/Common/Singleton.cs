@@ -24,7 +24,7 @@ public class Singleton : MonoBehaviour  //싱글톤 : 객체를 하나만 가지는 디자인 �
                 {
                     GameObject gameObj = new GameObject();      // 빈오브젝트 생성
                     gameObj.name = "Singletoin";                // 이름 변경하고
-                    gameObj.AddComponent<Singleton>();          // 싱글톤을 컴포넌트로 추가
+                    obj = gameObj.AddComponent<Singleton>();          // 싱글톤을 컴포넌트로 추가
                 }
                 instance = obj;                                 // 없어서 새로 만든 것이든 에디터가 만들어 놓았던 것이든 instance에 저장
                 DontDestroyOnLoad(obj.gameObject);              // 씬이 닫히더라도 게임 오브젝트가 삭제되지 않게 설정
