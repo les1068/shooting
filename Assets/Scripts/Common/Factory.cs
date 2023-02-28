@@ -1,43 +1,41 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
-
-public enum PoolObjectType  // enum(ÀÌ³Ñ) Å¸ÀÔ
+public enum PoolObjectType  // enum(ì´ë„˜) íƒ€ì…
 {
     Bullet = 0,
     Hit,
     Enemy,
     Explosion
 }
-public class Factory : Singleton<Factory> // ¿ÀºêÁ§Æ® »ı¼ºÇØÁÖ´Â Å¬·¡½º
+public class Factory : Singleton<Factory> // ì˜¤ë¸Œì íŠ¸ ìƒì„±í•´ì£¼ëŠ” í´ë˜ìŠ¤
 {
-    // »ı¼ºÇÒ ¿ÀºêÁ§Æ®ÀÇ Ç®µé
+    // ìƒì„±í•  ì˜¤ë¸Œì íŠ¸ì˜ í’€ë“¤
     BulletPool bulletPool;
     EnemyPool enemyPool;
     ExplosionEffectPool explosionPool;
     HitEffectPool hitPool;
 
-    protected override void preInitialize()  // ÀÌ ½Ì±ÛÅæÀÌ ¸¸µé¾î Áú ¶§ Ã³À½ ÇÑ¹ø¸¸ È£ÃâµÉ ÇÔ¼ö
+    protected override void preInitialize()  // ì´ ì‹±ê¸€í†¤ì´ ë§Œë“¤ì–´ ì§ˆ ë•Œ ì²˜ìŒ í•œë²ˆë§Œ í˜¸ì¶œë  í•¨ìˆ˜
     {
-        // ÀÚ½ÄÀ¸·Î ºÙ¾îÀÖ´Â Ç®µé ´Ù Ã£¾Æ³õ±â
+        // ìì‹ìœ¼ë¡œ ë¶™ì–´ìˆëŠ” í’€ë“¤ ë‹¤ ì°¾ì•„ë†“ê¸°
         bulletPool = GetComponentInChildren<BulletPool>();
         enemyPool= GetComponentInChildren<EnemyPool>();
         explosionPool = GetComponentInChildren<ExplosionEffectPool>();
         hitPool = GetComponentInChildren<HitEffectPool>();
     }
-    protected override void Initialize() //¾ÀÀÌ ·ÎµåµÉ ¶§¸¶´Ù È£ÃâµÇ´Â ÃÊ±âÈ­ ÇÔ¼ö
+    protected override void Initialize() //ì”¬ì´ ë¡œë“œë  ë•Œë§ˆë‹¤ í˜¸ì¶œë˜ëŠ” ì´ˆê¸°í™” í•¨ìˆ˜
     {
-        bulletPool?.Initialize();      // ?.Àº nullÀÌ ¾Æ´Ï¸é ½ÇÇà, nullÀÌ¸é ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+        bulletPool?.Initialize();      // ?.ì€ nullì´ ì•„ë‹ˆë©´ ì‹¤í–‰, nullì´ë©´ ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
         enemyPool?.Initialize();
         explosionPool?.Initialize();
         hitPool?.Initialize();
     }
-    public GameObject GetObject(PoolObjectType type)  // ÁöÁ¤µÈ ¿ÀºêÁ§Æ®¸¦ Ç®¿¡¼­ ²¨³»ÁÖ´Â ÇÔ¼ö. type = ½á³¾ ¿ÀºêÁ§Æ®ÀÇ Á¾·ù
+    public GameObject GetObject(PoolObjectType type)  // ì§€ì •ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ í’€ì—ì„œ êº¼ë‚´ì£¼ëŠ” í•¨ìˆ˜. type = ì¨ë‚¼ ì˜¤ë¸Œì íŠ¸ì˜ ì¢…ë¥˜
     {
         GameObject result = null;
-        switch (type)               // type¿¡ ¸Â°Ô ²¨³»¼­ result¿¡ ÀúÀå
+        switch (type)               // typeì— ë§ê²Œ êº¼ë‚´ì„œ resultì— ì €ì¥
         {
             case PoolObjectType.Bullet:
                 result = GetBullet().gameObject;
@@ -55,8 +53,8 @@ public class Factory : Singleton<Factory> // ¿ÀºêÁ§Æ® »ı¼ºÇØÁÖ´Â Å¬·¡½º
         return result;
     }
 
-    public Bullet GetBullet() => bulletPool?.GetObject();    // BulletÇ®¿¡¼­ BulletÇÏ³ª ²¨³»´Â ÇÔ¼ö
-    public Effect GetHitEffect() => hitPool?.GetObject();   // EffectÇ®¿¡¼­ EffectÇÏ³ª ²¨³»´Â ÇÔ¼ö
-    public Enemy GetEnemy() => enemyPool?.GetObject();    // EnemyÇ®¿¡¼­ EnemyÇÏ³ª ²¨³»´Â ÇÔ¼ö
-    public Effect GetExplosionEffect() => explosionPool?.GetObject();    // ExplosionEffectÇ®¿¡¼­ ExplosionEffectÇÏ³ª ²¨³»´Â ÇÔ¼ö
+    public Bullet GetBullet() => bulletPool?.GetObject();    // Bulletí’€ì—ì„œ Bulletí•˜ë‚˜ êº¼ë‚´ëŠ” í•¨ìˆ˜
+    public Effect GetHitEffect() => hitPool?.GetObject();   // Effectí’€ì—ì„œ Effectí•˜ë‚˜ êº¼ë‚´ëŠ” í•¨ìˆ˜
+    public Enemy GetEnemy() => enemyPool?.GetObject();    // Enemyí’€ì—ì„œ Enemyí•˜ë‚˜ êº¼ë‚´ëŠ” í•¨ìˆ˜
+    public Effect GetExplosionEffect() => explosionPool?.GetObject();    // ExplosionEffectí’€ì—ì„œ ExplosionEffectí•˜ë‚˜ êº¼ë‚´ëŠ” í•¨ìˆ˜
 }

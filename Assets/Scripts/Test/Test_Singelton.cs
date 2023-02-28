@@ -7,15 +7,16 @@ public class Test_Singelton : Test_Base
 {
     private void Start()
     {
-        //Player player= new Player();
+        
     }
     protected override void Test1(InputAction.CallbackContext _)
     {
+        //Factory.Inst.GetObject(PoolObjectType.Bullet);
         Factory.Inst.GetBullet();
     }
     protected override void Test2(InputAction.CallbackContext _)
     {
-        Factory.Inst.GetObject(PoolObjectType.Hit);
+        Factory.Inst.GetHitEffect();
     }
     protected override void Test3(InputAction.CallbackContext _)
     {
