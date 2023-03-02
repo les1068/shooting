@@ -14,7 +14,7 @@ public class Spawner : MonoBehaviour
     public float interval = 1.0f;  // 생성 시간 간격
     //WaitForSeconds wait;
 
-    Player player = null;  // 게임 내의 플레이어에 대한 참조
+    protected Player player = null;  // 게임 내의 플레이어에 대한 참조
 
     private void Start()
     {
@@ -25,27 +25,12 @@ public class Spawner : MonoBehaviour
         StartCoroutine(Spawn());    // 시작할 때 Spawn 코루틴 시작
     }
 
-    IEnumerator Spawn()  // 오브젝트를 주기적으로 생성하는 코루틴
-    {  
-        while(true)     // 무한 반복(무한루프)
-        {
-            // 생성하고 생성한 오브젝트를 스포너의 자식으로 만들기
-            //GameObject obj = Instantiate(spawnPrefab, transform);
-            GameObject obj = Factory.Inst.GetObject(PoolObjectType.Enemy);
-            
-            Enemy enemy = obj.GetComponent<Enemy>();    // 생성한 게임오브젝트에서 Enemy 컴포넌트 가져오기
-            enemy.TargetPlayer = player;                // Enemy에 플레이어 설정
-
-            enemy.transform.position = transform.position; // 스포너 위치로 이동
-            float r = Random.Range(minY, maxY);            // 랜덤하게 적용할 기준 높이 구하고
-            enemy.BaseY= transform.position.y + r;         // 기준 높이 적용
-
-            //yield return wait;
-            yield return new WaitForSeconds(interval);  // 인터벌만큼 대기
-        }
+    virtual protected IEnumerator Spawn()  // 오브젝트를 주기적으로 생성하는 코루틴
+    {
+        yield return null;
     }
 
-    private void OnDrawGizmos()  // 씬창에 개발용 정보를 그리는 함수
+    virtual protected void OnDrawGizmos()  // 씬창에 개발용 정보를 그리는 함수
     {
         Gizmos.color = Color.green;             // 게임 전체적으로 색상 지정됨
         // Gizmos.color = new Color(0, 1, 0);   // rgb값으로 색상을 만들 수도 있다.
@@ -55,7 +40,7 @@ public class Spawner : MonoBehaviour
             new Vector3(1, Mathf.Abs(maxY) + Mathf.Abs(minY) + 2, 1));
     }
 
-    private void OnDrawGizmosSelected()  // 씬창에 개발용 정보를 그리는 함수(선택된 게임 오브젝트만 그릴때)
+    virtual protected void OnDrawGizmosSelected()  // 씬창에 개발용 정보를 그리는 함수(선택된 게임 오브젝트만 그릴때)
     {
         Gizmos.color = Color.red;
 

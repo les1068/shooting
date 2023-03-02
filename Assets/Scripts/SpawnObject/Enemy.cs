@@ -23,7 +23,7 @@ public class Enemy : PoolObject
 
     bool isAlive = true;      // 살아있는지 여부를 나타내는 플래그(flag). true면 살아있고 false면 죽어있다.
 
-    Player player = null;     // 플레이어에 대한 참조
+    protected Player player = null;     // 플레이어에 대한 참조
     // player에 처음 한번만 값을 설정 가능한 프로퍼티. 쓰기 전용.
     public Player TargetPlayer
     {

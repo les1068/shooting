@@ -19,7 +19,7 @@ public class Bullet : PoolObject
     {
         // 초당 speed의 속도로 오른쪽방향으로 이동(로컬 좌표를 기준으로 한 방향)
         //transform.Translate(Time.deltaTime * speed * Vector2.right); 
-        //transform.Translate(Time.deltaTime * speed * transform.right, Space.World); 
+        //transform.Translate(Time.deltaTime * speed * transform.right, Space.World);  // 월드 좌표 Space.World
         transform.position += Time.deltaTime * speed * transform.right;
 
         // local좌표와 world좌표

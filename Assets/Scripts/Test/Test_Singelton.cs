@@ -26,4 +26,8 @@ public class Test_Singelton : Test_Base
     {
         Factory.Inst.GetExplosionEffect();
     }
+    protected override void Test5(InputAction.CallbackContext _)
+    {
+        Factory.Inst.GetAsteroid();
+    }
 }

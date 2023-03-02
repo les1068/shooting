@@ -7,6 +7,7 @@ public enum PoolObjectType  // enum(이넘) 타입
     Bullet = 0,
     Hit,
     Enemy,
+    Asteroid,
     Explosion
 }
 public class Factory : Singleton<Factory> // 오브젝트 생성해주는 클래스
@@ -16,6 +17,7 @@ public class Factory : Singleton<Factory> // 오브젝트 생성해주는 클래
     EnemyPool enemyPool;
     ExplosionEffectPool explosionPool;
     HitEffectPool hitPool;
+    AsteriodPool asteroidPool;
 
     protected override void preInitialize()  // 이 싱글톤이 만들어 질 때 처음 한번만 호출될 함수
     {
@@ -24,6 +26,7 @@ public class Factory : Singleton<Factory> // 오브젝트 생성해주는 클래
         enemyPool= GetComponentInChildren<EnemyPool>();
         explosionPool = GetComponentInChildren<ExplosionEffectPool>();
         hitPool = GetComponentInChildren<HitEffectPool>();
+        asteroidPool = GetComponentInChildren<AsteriodPool>();
     }
     protected override void Initialize() //씬이 로드될 때마다 호출되는 초기화 함수
     {
@@ -31,6 +34,7 @@ public class Factory : Singleton<Factory> // 오브젝트 생성해주는 클래
         enemyPool?.Initialize();
         explosionPool?.Initialize();
         hitPool?.Initialize();
+        asteroidPool?.Initialize();
     }
     public GameObject GetObject(PoolObjectType type)  // 지정된 오브젝트를 풀에서 꺼내주는 함수. type = 써낼 오브젝트의 종류
     {
@@ -49,6 +53,9 @@ public class Factory : Singleton<Factory> // 오브젝트 생성해주는 클래
             case PoolObjectType.Explosion:
                 result = GetExplosionEffect().gameObject;
                 break;
+            case PoolObjectType.Asteroid:
+                result = GetAsteroid().gameObject;
+                break;
         }
         return result;
     }
@@ -57,4 +64,5 @@ public class Factory : Singleton<Factory> // 오브젝트 생성해주는 클래
     public Effect GetHitEffect() => hitPool?.GetObject();   // Effect풀에서 Effect하나 꺼내는 함수
     public Enemy GetEnemy() => enemyPool?.GetObject();    // Enemy풀에서 Enemy하나 꺼내는 함수
     public Effect GetExplosionEffect() => explosionPool?.GetObject();    // ExplosionEffect풀에서 ExplosionEffect하나 꺼내는 함수
+    public Asteroid GetAsteroid() => asteroidPool?.GetObject();
 }
