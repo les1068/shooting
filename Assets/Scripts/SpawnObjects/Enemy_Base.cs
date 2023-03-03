@@ -12,9 +12,9 @@ public class Enemy_Base : PoolObject
     public PoolObjectType destroyEffect = PoolObjectType.Explosion;  //파괴 이펙트
 
     int hitPoint = 1;                   // 적의 HP
-    bool isCrush = true;                // 파괴되었는지 여부
+    bool isCrush = false;                // 파괴되었는지 여부, truie면 파괴된 상황, false면 멀
 
-    Player player = null;  // 플레이어에 대한 참조
+    public Player player = null;  // 플레이어에 대한 참조
 
     public Player TargetPlayer  // player에 처음 한번만 값을 설정 가능한 프로퍼티. 쓰기 전용.
     {
@@ -28,7 +28,7 @@ public class Enemy_Base : PoolObject
     }
     protected virtual void OnEnable()
     {
-        isCrush = true;          //다시 살아난 것 표시
+        isCrush = false;          //다시 살아난 것 표시
         hitPoint = MaxHitPoint;  // hp 최대치로 채우기
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -48,10 +48,11 @@ public class Enemy_Base : PoolObject
     }
     protected virtual void OnCrush()
     {
-        if (isCrush)
+        if (!isCrush)
         {
-            isCrush = false;      // 파괴 되었다고 표시
-            player.AddScore(score);  // 점수 추가
+            isCrush = true;      // 파괴 되었다고 표시
+            
+            player?.AddScore(score);  // 점수 추가
 
             GameObject obj = Factory.Inst.GetObject(destroyEffect);  // 터지는 이펙트 생성
             obj.transform.position = transform.position; // 이펙트 위치 변경

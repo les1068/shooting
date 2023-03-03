@@ -11,7 +11,6 @@ public class Test_Base : MonoBehaviour
     {
         inputActions = new PlayerInputActions();
     }
-
     private void OnEnable()
     {
         inputActions.Test.Enable();
