@@ -9,6 +9,7 @@ public enum PoolObjectType
     Hit,
     Enemy,
     Asteroid,
+    AsteroidSmall,
     Explosion
 }
 
@@ -22,6 +23,7 @@ public class Factory : Singleton<Factory>
     EnemyPool enemyPool;
     ExplosionEffectPool explosionPool;
     HitEffectPool hitPool;
+    AsteroidSmallPool asteroidSmallPool;
     AsteroidPool asteroidPool;
 
     /// <summary>
@@ -35,6 +37,7 @@ public class Factory : Singleton<Factory>
         explosionPool = GetComponentInChildren<ExplosionEffectPool>();
         hitPool = GetComponentInChildren<HitEffectPool>();
         asteroidPool = GetComponentInChildren<AsteroidPool>();
+        asteroidSmallPool = GetComponentInChildren<AsteroidSmallPool>();
     }
 
     /// <summary>
@@ -47,6 +50,7 @@ public class Factory : Singleton<Factory>
         explosionPool?.Initialize();
         hitPool?.Initialize();
         asteroidPool?.Initialize();
+        asteroidSmallPool?.Initialize();
     }
 
     /// <summary>
@@ -74,38 +78,22 @@ public class Factory : Singleton<Factory>
             case PoolObjectType.Asteroid:
                 result = GetAsteroid().gameObject;
                 break;
+            case PoolObjectType.AsteroidSmall:
+                result= GetAsteroidSmall().gameObject; 
+                break;
         }
         return result;      // result를 리턴. 타입이 없는 타입이면 null
     }
+    public Bullet GetBullet() => bulletPool?.GetObject(); // Bullet풀에서 Bullet하나 꺼내는 함수
 
-    /// <summary>
-    /// Bullet풀에서 Bullet하나 꺼내는 함수
-    /// </summary>
-    /// <returns></returns>
-    public Bullet GetBullet() => bulletPool?.GetObject();
+    public Effect GetHitEffect() => hitPool?.GetObject();  // HitEffect풀에서 HitEffect하나 꺼내는 함수
 
-    /// <summary>
-    /// HitEffect풀에서 HitEffect하나 꺼내는 함수
-    /// </summary>
-    /// <returns></returns>
-    public Effect GetHitEffect() => hitPool?.GetObject();
+    public Fighter GetEnemy() => enemyPool?.GetObject();  // Enemy풀에서 Enemy하나 꺼내는 함수
 
-    /// <summary>
-    /// Enemy풀에서 Enemy하나 꺼내는 함수
-    /// </summary>
-    /// <returns></returns>
-    public Fighter GetEnemy() => enemyPool?.GetObject();
+    public Effect GetExplosionEffect() => explosionPool?.GetObject(); // ExplosionEffect풀에서 ExplosionEffect하나 꺼내는 함수
 
-    /// <summary>
-    /// ExplosionEffect풀에서 ExplosionEffect하나 꺼내는 함수
-    /// </summary>
-    /// <returns></returns>
-    public Effect GetExplosionEffect() => explosionPool?.GetObject();
+    public Asteroid GetAsteroid() => asteroidPool?.GetObject(); // AsteroidPool풀에서 운석 하나 꺼내는 함수
 
-    /// <summary>
-    /// AsteroidPool풀에서 운석 하나 꺼내는 함수
-    /// </summary>
-    /// <returns></returns>
-    public Asteroid GetAsteroid() => asteroidPool?.GetObject();
+    public AsteroidBase GetAsteroidSmall() => asteroidSmallPool?.GetObject();
 
 }

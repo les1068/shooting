@@ -7,88 +7,51 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    /// <summary>
-    /// 플레이어의 이동 속도
-    /// </summary>
-    public float speed = 10.0f;
+    public float speed = 10.0f;  // 플레이어의 이동 속도
 
-    /// <summary>
-    /// 총알 발사 간격
-    /// </summary>
-    public float fireInterval = 0.5f;
+    public float fireInterval = 0.5f; //총알 발사 간격
 
-    /// <summary>
-    /// 플레이어의 총알 타입
-    /// </summary>
-    public PoolObjectType bulletType;
+    public PoolObjectType bulletType;  // 플레이어의 총알 타입
 
-    /// <summary>
-    /// 발사 위치 표시용 트랜스폼
-    /// </summary>
-    private Transform fireTransform;
+    private Transform fireTransform;  // 발사 위치 표시용 트랜스폼
 
-    /// <summary>
-    /// 총알 발사 이팩트
-    /// </summary>
-    private GameObject fireFlash;
+    private GameObject fireFlash;  // 총알 발사 이팩트
 
-    /// <summary>
-    /// 에니메이터 컴포넌트
-    /// </summary>
-    private Animator anim;
+    private Animator anim;  // 에니메이터 컴포넌트
 
-    /// <summary>
-    /// 입력처리용 InputAction
-    /// </summary>
-    private PlayerInputActions inputActions;
+    private PlayerInputActions inputActions;  // 입력처리용 InputAction
 
-    /// <summary>
-    /// 현재 입력된 입력 방향
-    /// </summary>
-    private Vector3 inputDir = Vector3.zero;
+    private Vector3 inputDir = Vector3.zero;  // 현재 입력된 입력 방향
 
-    /// <summary>
-    /// 플레이어의 점수
-    /// </summary>
-    private int score = 0;
+    private int score = 0;  // 플레이어의 점수
 
-    /// <summary>
-    /// 연사용 코루틴을 저장할 변수
-    /// </summary>
-    IEnumerator fireCoroutine;
+    IEnumerator fireCoroutine; // 연사용 코루틴을 저장할 변수
 
 
     // 델리게이트(Delegate) : 신호를 보내는 것. 함수를 등록할 수 있다.
 
-    /// <summary>
-    /// 점수가 변경되면 실행될 델리게이트. 파라메터가 int 하나이고 리턴타입이 void인 함수를 등록할 수 있다.
-    /// </summary>
-    public Action<int> onScoreChange;    
+    public Action<int> onScoreChange;     // 점수가 변경되면 실행될 델리게이트.파라메터가 int 하나이고 리턴타입이 void인 함수를 등록할 수 있다.
 
 
     // 프로퍼티(Property) : 값을 넣거나 읽을 때 추가적으로 할일이 많을 때 사용
-
-    /// <summary>
-    /// 플레이어의 점수를 확인할 수 있는 프로퍼티(읽기 전용)
-    /// </summary>
-    public int Score    
+    public int Score     // 플레이어의 점수를 확인할 수 있는 프로퍼티(읽기 전용)
     {
-        // get : 다른 곳에서 특정 값을 확인할 때 사용됨
-        // set : 다른 곳에서 특정 값을 설정할 때 사용됨
+        /*get : 다른 곳에서 특정 값을 확인할 때 사용됨
+        set : 다른 곳에서 특정 값을 설정할 때 사용됨
 
-        //get     
-        //{
-        //    return score;
-        //}
+       get
+        {
+            return score;
+        }*/
         get => score;   // 위에 주석으로 처리된 get을 요약한 것
 
         private set     // 앞에 private를 붙이면 자신만 사용가능
         {
             score = value;
-            //if( onScoreChange != null )
-            //{
-            //    onScoreChange.Invoke(score);
-            //}
+            /*if (onScoreChange != null)
+            {
+                onScoreChange.Invoke(score);
+            }*/
             onScoreChange?.Invoke(score);   // 위의 4줄을 줄인 것. 점수가 변경되었음을 사방에 알림.
 
             Debug.Log($"점수 : {score}");
@@ -142,32 +105,32 @@ public class Player : MonoBehaviour
     // 매 프레임마다 계속 실행되는 함수
     void Update()
     {
-        // 인풋 매니저 사용 방식 - 앞으로 사용안함
-        //Debug.Log("Update");
-        //if( Input.GetKeyDown(KeyCode.W))
-        //{
-        //    Debug.Log("W키가 눌러짐");
-        //}
-        //if (Input.GetKeyDown(KeyCode.A))
-        //{
-        //    Debug.Log("A키가 눌러짐");
-        //}
-        //if (Input.GetKeyDown(KeyCode.S))
-        //{
-        //    Debug.Log("S키가 눌러짐");
-        //}
-        //if (Input.GetKeyDown(KeyCode.D))
-        //{
-        //    Debug.Log("D키가 눌러짐");
-        //}
-        //float input = Input.GetAxis("Horizontal");  // 수평 방향 처리
-        ////Debug.Log(input);
-        //// 수직 입력 처리하기
-        //input = Input.GetAxis("Vertical");
+        /*인풋 매니저 사용 방식 -앞으로 사용안함
+        Debug.Log("Update");
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Debug.Log("W키가 눌러짐");
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("A키가 눌러짐");
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("S키가 눌러짐");
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Debug.Log("D키가 눌러짐");
+        }
+        float input = Input.GetAxis("Horizontal");  // 수평 방향 처리
         //Debug.Log(input);
+        // 수직 입력 처리하기
+        input = Input.GetAxis("Vertical");
+        Debug.Log(input);
 
-        //Time.deltaTime * speed * inputDir     // 곱하기 총 4번
-        //inputDir * Time.deltaTime * speed     // 곱하기 총 6번
+        Time.deltaTime* speed *inputDir     // 곱하기 총 4번
+        inputDir* Time.deltaTime* speed     // 곱하기 총 6번*/
 
 
         //transform.position += Time.deltaTime * speed * inputDir;
@@ -189,10 +152,10 @@ public class Player : MonoBehaviour
         //Debug.Log($"충돌영역에서 나감 - 충돌 대상 : {collision.gameObject.name}");        
     }
 
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    Debug.Log("충돌영역에 접촉해 있으면서 움직이는 중");
-    //}
+    /*private void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log("충돌영역에 접촉해 있으면서 움직이는 중");
+    }*/
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -204,10 +167,10 @@ public class Player : MonoBehaviour
         //Debug.Log($"트리거에서 나감 - 대상 트리거 : {collision.gameObject.name}");        
     }
 
-    //private void OnTriggerStay2D(Collider2D collision)
-    //{
-    //    Debug.Log("트리거 안에서 움직임");        
-    //}
+    /*private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.Log("트리거 안에서 움직임");
+    }*/
 
     private void OnFireStart(InputAction.CallbackContext _)
     {
@@ -221,11 +184,7 @@ public class Player : MonoBehaviour
         StopCoroutine(fireCoroutine);       // 땠을 때 코루틴 정지
     }
 
-    /// <summary>
-    /// 연사용 코루틴 함수
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator FireCoroutine()
+    IEnumerator FireCoroutine()  // 연사용 코루틴 함수
     {
         while (true)
         {
@@ -236,11 +195,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// flash가 깜빡하는 코루틴
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator FlashEffect()
+    IEnumerator FlashEffect()  // flash가 깜빡하는 코루틴
     {
         fireFlash.SetActive(true);              // 켜고
         yield return new WaitForSeconds(0.1f);  // 0.1초 대기하고
@@ -255,15 +210,11 @@ public class Player : MonoBehaviour
     private void OnMoveInput(InputAction.CallbackContext context)
     {
         Vector2 dir = context.ReadValue<Vector2>();
-        anim.SetFloat("InputY", dir.y);         // 에니메이터에 있는 InputY 파라메터에 dir.y값을 준다.
+        anim.SetFloat("InputY", dir.y);         // 애니메이터에 있는 InputY 파라메터에 dir.y값을 준다.
         inputDir = dir;
     }
 
-    /// <summary>
-    /// Score에 점수를 추가하는 함수
-    /// </summary>
-    /// <param name="plus">추가할 점수</param>
-    public void AddScore(int plus)
+    public void AddScore(int plus)  // Score에 점수를 추가하는 함수
     {
         Score += plus;
     }
