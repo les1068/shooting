@@ -2,53 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : PoolObject
+public class Fighter : Enemy_Base
 {
-    /// <summary>
-    /// 적 이동 속도
-    /// </summary>
-    public float speed = 1.0f;
+ 
+    public float speed = 1.0f;  // 적 이동 속도
 
-    /// <summary>
-    /// 적 위아래 이동 정도(비율)
-    /// </summary>
     [Range(0.1f, 3.0f)]         // 변수 범위를 (min,max)사이로 변경시키는 슬라이더 추가
     public float amplitude = 1; // 사인 결과값을 증폭시킬 변수(위아래 차이 결정)
 
-    /// <summary>
-    /// 위아래로 한번 움직이는데 걸리는 거리(비율)
-    /// </summary>
     public float frequency = 1; // 사인 그래프가 한번 도는데 걸리는 시간(가로 폭 결정)
 
-    /// <summary>
-    /// 적이 터지는 이팩트
-    /// </summary>
-    public PoolObjectType explosionType;
+    public PoolObjectType explosionType;   // 적이 터지는 이팩트
 
-    /// <summary>
-    /// 이 적이 죽을때 플레이어에게 주는 점수
-    /// </summary>
-    public int score = 10;
+    public int score = 10;  // 이 적이 죽을때 플레이어에게 주는 점수
 
-    /// <summary>
-    /// 누적 시간(사인 계산용)
-    /// </summary>
-    float timeElapsed = 0.0f;
+    float timeElapsed = 0.0f;  // 누적 시간(사인 계산용)
 
-    /// <summary>
-    /// 처음 등장한 위치
-    /// </summary>
-    float baseY;
+    float baseY;  // 처음 등장한 위치
 
-    /// <summary>
-    /// 살아있는지 여부를 나타내는 플래그(flag). true면 살아있고 false면 죽어있다.
-    /// </summary>
-    bool isAlive = true;
+    bool isAlive = true;  // 살아있는지 여부를 나타내는 플래그(flag). true면 살아있고 false면 죽어있다.
 
-    /// <summary>
-    /// 플레이어에 대한 참조
-    /// </summary>
-    Player player = null;
+    Player player = null;   // 플레이어에 대한 참조
 
     /// <summary>
     /// player에 처음 한번만 값을 설정 가능한 프로퍼티. 쓰기 전용.

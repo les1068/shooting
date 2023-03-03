@@ -3,82 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class Asteroid : PoolObject
+public class Asteroid : Enemy_Base
 {
-    /// <summary>
-    /// 최소 이동 속도
-    /// </summary>
-    public float minMoveSpeed = 2.0f;
+    [Header("운석 데이터 ---------")]
 
-    /// <summary>
-    /// 최대 이동 속도
-    /// </summary>
-    public float maxMoveSpeed = 4.0f;
+    public float minMoveSpeed = 2.0f;  // 최소 이동 속도
 
-    /// <summary>
-    /// 최소 회전 속도
-    /// </summary>
-    public float minRotateSpeed = 30.0f;
+    public float maxMoveSpeed = 4.0f;    // 최대 이동 속도
 
-    /// <summary>
-    /// 최대 회전 속도
-    /// </summary>
-    public float maxRotateSpeed = 360.0f;
+    public float minRotateSpeed = 30.0f;   // 최소 회전 속도
 
-    /// <summary>
-    /// flip용 스프라이트 랜더러
-    /// </summary>
-    SpriteRenderer spriteRenderer;
+    public float maxRotateSpeed = 360.0f;  // 최대 회전 속도
 
-    /// <summary>
-    /// 실제 이동 속도(초당 이동 거리)
-    /// </summary>
-    float moveSpeed = 1.5f;
+    SpriteRenderer spriteRenderer;    // flip용 스프라이트 랜더러
+  
+    float rotateSpeed = 30.0f;  // 실제 회전 속도(초당 회전 각도(도:degree))
 
-    /// <summary>
-    /// 실제 회전 속도(초당 회전 각도(도:degree))
-    /// </summary>
-    float rotateSpeed = 30.0f;
+    Vector3 dir = Vector3.left;  // 운석의 이동 방향
 
-    /// <summary>
-    /// 운석의 이동 방향
-    /// </summary>
-    Vector3 dir = Vector3.left;
-
-    /// <summary>
-    /// 운석의 이동 방향 설정용 프로퍼티
-    /// </summary>
-    public Vector3 Direction
+    public Vector3 Direction   // 운석의 이동 방향 설정용 프로퍼티
     {
         set => dir = value;
     }
-
-    /// <summary>
-    /// 플레이어에 대한 참조
-    /// </summary>
-    Player player = null;
-
-    /// <summary>
-    /// player에 처음 한번만 값을 설정 가능한 프로퍼티. 쓰기 전용.
-    /// </summary>
-    public Player TargetPlayer
-    {
-        set
-        {
-            if (player == null)     // player가 null일때만 설정
-            {
-                player = value;
-            }
-        }
-    }
+    
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         // 랜덤으로 이동 속도 결정
         moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
 
@@ -111,4 +67,5 @@ public class Asteroid : PoolObject
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + dir * 1.5f);
     }
+    
 }

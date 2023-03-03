@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Core\Singleton.cs" />
     <Compile Include="Assets\Scripts\Test\Test_Singleton.cs" />
-    <Compile Include="Assets\Scripts\SpawnObjects\Enemy.cs" />
+    <Compile Include="Assets\Scripts\SpawnObjects\Fighter.cs" />
     <Compile Include="Assets\Input\PlayerInputActions.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Enemy1.cs" />
     <Compile Include="Assets\Scripts\Common\Pool\AsteroidPool.cs" />
@@ -85,6 +85,7 @@
     <Compile Include="Assets\Scripts\Background\PlanetMover.cs" />
     <Compile Include="Assets\Scripts\Background\StarScroller.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreBoard.cs" />
+    <Compile Include="Assets\Scripts\SpawnObjects\Enemy_Base.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
