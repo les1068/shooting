@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// ★★★<> 들어간 것은 제네릭 타입
+// <> 들어간 것은 제네릭 타입
 // 코드 내용은 동일한데 타입만 다를 경우 유용하다.
 
 // where T : Component
@@ -13,29 +13,46 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject
     //ArrayList listA;    // 리스트에 다 넣을 수 있다.    // 박싱 언박싱이 발생하므로 사용하지 말 것
     //List<int> list;     // 리스트에 int만 넣을 수 있다. // 제네릭 타입을 사용하는 것이 좋다.
 
-    public GameObject originalPrefab;  // 풀에 생성해 놓을 오브젝트의 프리팹
+    /// <summary>
+    /// 풀에 생성해 놓을 오브젝트의 프리팹
+    /// </summary>
+    public GameObject originalPrefab;
 
-    public int poolSize = 64;  // 풀의 크기. 처음에 생성하는 오브젝트의 갯수. 갯수는 2^n으로 잡는것이 좋다.
+    /// <summary>
+    /// 풀의 크기. 처음에 생성하는 오브젝트의 갯수. 갯수는 2^n으로 잡는것이 좋다.
+    /// </summary>
+    public int poolSize = 64;
 
-    T[] pool;                // 풀이 생성한 모든 오브젝트가 들어있는 배열
+    /// <summary>
+    /// 풀이 생성한 모든 오브젝트가 들어있는 배열
+    /// </summary>
+    T[] pool;
 
-    Queue<T> readyQueue;   // 사용 가능한 오브젝트들이 들어있는 큐
+    /// <summary>
+    /// 사용 가능한 오브젝트들이 들어있는 큐
+    /// </summary>
+    Queue<T> readyQueue;
 
-
-    public void Initialize()  // 처음 만들어졌을 때 한번 실행될 코드(초기화 코드)
+    /// <summary>
+    /// 처음 만들어졌을 때 한번 실행될 코드(초기화 코드)
+    /// </summary>
+    public void Initialize()
     {
         pool = new T[poolSize];
         readyQueue = new Queue<T>(poolSize);    // capacity를 poolSize만큼잡고 생성
-        //readyQueue.Count();         // 실제로 사용하는 갯수
-        //readyQueue.Capatity;        // 미리 만들어 놓은 노드의 갯수
+        //readyQueue.Count();     // 실제로 사용하는 갯수
+        //readyQueue.Capatity;    // 미리 만들어 놓은 노드의 갯수
 
         GenerateObjects(0, poolSize, pool);     // 첫번째 풀 생성
     }
 
-    void GenerateObjects(int start, int end, T[] newArray)  // 오브젝트를 생성하고 배열에 추가 하는 함수
-       // start새로 생성한 오브젝트가 들어가기 시작할 인덱스
-       // end새로 생성한 오브젝트가 마지막으로 들어가는 인덱스의 한칸 앞
-       // newArray새로 생성한 오브젝트가 들어갈 배열(풀)
+    /// <summary>
+    /// 오브젝트를 생성하고 배열에 추가 하는 함수
+    /// </summary>
+    /// <param name="start">새로 생성한 오브젝트가 들어가기 시작할 인덱스</param>
+    /// <param name="end">새로 생성한 오브젝트가 마지막으로 들어가는 인덱스의 한칸 앞</param>
+    /// <param name="newArray">새로 생성한 오브젝트가 들어갈 배열(풀)</param>
+    void GenerateObjects(int start, int end, T[] newArray)
     {
         for(int i=start; i<end; i++)    // start부터 end까지 반복
         {
@@ -48,12 +65,15 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject
             comp.onDisable += () => readyQueue.Enqueue(comp);   
 
             newArray[i] = comp;                 // 풀 배열에 넣고
-            obj.SetActive(false);               // 비활성화해서 안보이게 만들고 레디큐에도 추가하기
-            
+            obj.SetActive(false);               // 비활성화해서 안보이게 만들기고 레디큐에도 추가하기
         }
     }
 
-    public T GetObject() // 풀에서 오브젝트 하나를 꺼내서 리턴해주는 함수
+    /// <summary>
+    /// 풀에서 오브젝트 하나를 꺼내서 리턴해주는 함수
+    /// </summary>
+    /// <returns>레디큐에서 꺼낸 오브젝트</returns>
+    public T GetObject()
     {
         if( readyQueue.Count > 0 )  // 큐에 오브젝트가 있는지 확인
         {
@@ -62,7 +82,7 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject
             return obj;                     // 리턴
         }
         else
-        {
+        {            
             ExpandPool();           // 큐에 오브젝트가 없으면 풀을 두배로 늘린다.
             return GetObject();     // 새롭게 하나 요청
         }
@@ -81,12 +101,14 @@ public class ObjectPool<T> : MonoBehaviour where T : PoolObject
         }
         else
         {
-            ExpandPool();
+            ExpandPool();           // 큐에 오브젝트가 없으면 풀을 두배로 늘린다.
             return GetObject();     // 새롭게 하나 요청
-        }
+        }        
     }
 
-    //풀을 두배로 확장 시키는 함수
+    /// <summary>
+    /// 풀을 두배로 확장 시키는 함수
+    /// </summary>
     private void ExpandPool()
     {
         // 큐에 오브젝트가 없으면 풀을 두배로 늘린다.

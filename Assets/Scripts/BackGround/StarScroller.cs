@@ -4,21 +4,22 @@ using UnityEngine;
 
 public class StarScroller : Scroller
 {
-    SpriteRenderer[] spritrenderers;
+    SpriteRenderer[] spriteRenderers;
 
     protected override void Awake()
     {
-        base.Awake();
-         
-        spritrenderers = GetComponentsInChildren<SpriteRenderer>();  // ÀÚ½ÄÀ¸·Î ÀÖ´Â SpriteRenderer ¸ğµÎ Ã£±â
+        base.Awake();   // Scrollerì˜ Awake ì‹¤í–‰í•˜ê³ 
+
+        spriteRenderers = GetComponentsInChildren<SpriteRenderer>();    // ìì‹ìœ¼ë¡œ ìˆëŠ” SpriteRenderer ëª¨ë‘ ì°¾ê¸°
     }
+
     protected override void MoveRightEnd(int index)
     {
-        base.MoveRightEnd(index);
+        base.MoveRightEnd(index);   // Scrollerì˜ MoveRightEnd ì‹¤í–‰í•˜ê³ 
 
-        int rand = Random.Range(0, 4);  // 0(0b_00),1(0b_01),2(0b_10),3(0b_11) 
+        int rand = Random.Range(0, 4);  // 0(0b_00), 1(0b_01), 2(0b_10), 3(0b_11)
 
-        spritrenderers[index].flipX = ((rand & 0b_01) != 0);  // Ã¹¹øÂ° ºñÆ®°¡ 1ÀÌ¸é true, ¾Æ´Ï¸é false
-        spritrenderers[index].flipY = ((rand & 0b_10) != 0);  // µÎ¹øÂ° ºñÆ®°¡ 1ÀÌ¸é true, ¾Æ´Ï¸é false
+        spriteRenderers[index].flipX = ((rand & 0b_01) != 0);   // ì²«ë²ˆì§¸ ë¹„íŠ¸ê°€ 1ì´ë©´ true, ì•„ë‹ˆë©´ false
+        spriteRenderers[index].flipY = ((rand & 0b_10) != 0);   // ë‘ë²ˆì§¸ ë¹„íŠ¸ê°€ 1ì´ë©´ true, ì•„ë‹ˆë©´ false
     }
 }

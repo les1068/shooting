@@ -3,23 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnerEnemy : Spawner
-{
+{    
+    /// <summary>
+    /// ì˜¤ë¸Œì íŠ¸ë¥¼ ì£¼ê¸°ì ìœ¼ë¡œ ìƒì„±í•˜ëŠ” ì½”ë£¨í‹´
+    /// </summary>
+    /// <returns></returns>
     override protected IEnumerator Spawn()
     {
-        while (true)     // ¹«ÇÑ ¹İº¹(¹«ÇÑ·çÇÁ)
+        while (true)     // ë¬´í•œ ë°˜ë³µ(ë¬´í•œë£¨í”„)
         {
-            // »ı¼ºÇÏ°í »ı¼ºÇÑ ¿ÀºêÁ§Æ®¸¦ ½ºÆ÷³ÊÀÇ ÀÚ½ÄÀ¸·Î ¸¸µé±â
+            // ìƒì„±í•˜ê³  ìƒì„±í•œ ì˜¤ë¸Œì íŠ¸ë¥¼ ìŠ¤í¬ë„ˆì˜ ìì‹ìœ¼ë¡œ ë§Œë“¤ê¸°
             GameObject obj = Factory.Inst.GetObject(PoolObjectType.Enemy);
 
-            Enemy enemy = obj.GetComponent<Enemy>();    // »ı¼ºÇÑ °ÔÀÓ¿ÀºêÁ§Æ®¿¡¼­ Enemy ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
-            enemy.TargetPlayer = player;                // Enemy¿¡ ÇÃ·¹ÀÌ¾î ¼³Á¤
+            Enemy enemy = obj.GetComponent<Enemy>();    // ìƒì„±í•œ ê²Œì„ì˜¤ë¸Œì íŠ¸ì—ì„œ Enemy ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+            enemy.TargetPlayer = player;                // Enemyì— í”Œë ˆì´ì–´ ì„¤ì •
 
-            enemy.transform.position = transform.position;  // ½ºÆ÷³Ê À§Ä¡·Î ÀÌµ¿
-            float r = Random.Range(minY, maxY);             // ·£´ıÇÏ°Ô Àû¿ëÇÒ ±âÁØ ³ôÀÌ ±¸ÇÏ°í
-            enemy.BaseY = transform.position.y + r;         // ±âÁØ ³ôÀÌ Àû¿ë
+            enemy.transform.position = transform.position;  // ìŠ¤í¬ë„ˆ ìœ„ì¹˜ë¡œ ì´ë™
+            float r = Random.Range(minY, maxY);             // ëœë¤í•˜ê²Œ ì ìš©í•  ê¸°ì¤€ ë†’ì´ êµ¬í•˜ê³ 
+            enemy.BaseY = transform.position.y + r;         // ê¸°ì¤€ ë†’ì´ ì ìš©
 
             //yield return wait;
-            yield return new WaitForSeconds(interval);  // ÀÎÅÍ¹ú¸¸Å­ ´ë±â
+            yield return new WaitForSeconds(interval);  // ì¸í„°ë²Œë§Œí¼ ëŒ€ê¸°
         }
     }
 }

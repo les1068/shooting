@@ -5,13 +5,25 @@ using TMPro;
 
 public class ScoreBoard : MonoBehaviour
 {
-    public float scoreUpSpeed = 50.0f;  // 점수가 올라가는 속도
+    /// <summary>
+    /// 점수가 올라가는 속도
+    /// </summary>
+    public float scoreUpSpeed = 50.0f;
 
-    float currentScore = 0;  // 현재 UI에서 보이는 점수
+    /// <summary>
+    /// 현재 UI에서 보이는 점수
+    /// </summary>
+    float currentScore = 0;
 
-    int targetScore = 0;  // 실제 플레이어가 가지고 있는 점수
+    /// <summary>
+    /// 실제 플레이어가 가지고 있는 점수
+    /// </summary>
+    int targetScore = 0;
 
-    TextMeshProUGUI score;  // 점수를 출력할 UI text
+    /// <summary>
+    /// 점수를 출력할 UI text
+    /// </summary>
+    TextMeshProUGUI score;
 
     private void Awake()
     {
@@ -30,7 +42,7 @@ public class ScoreBoard : MonoBehaviour
 
     private void Update()
     {
-        if( currentScore < targetScore )                   // currentScore가 targetScore보다 작으면
+        if( currentScore < targetScore )        // currentScore가 targetScore보다 작으면
         {
             // currentScore를 초당 scoreUpSpeed씩 증가시킨다.
             currentScore += Time.deltaTime * scoreUpSpeed;
@@ -39,7 +51,11 @@ public class ScoreBoard : MonoBehaviour
         }
     }
 
-    void ScoreUpdate(int newScore)   // 목표 점수를 새 점수로 설정
+    /// <summary>
+    /// 목표 점수를 새 점수로 설정
+    /// </summary>
+    /// <param name="newScore">새 점수</param>
+    void ScoreUpdate(int newScore)
     {
         targetScore = newScore;
     }

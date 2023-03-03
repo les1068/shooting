@@ -4,28 +4,37 @@ using UnityEngine;
 
 public class SpawnerAsteroid : Spawner
 {
+    /// <summary>
+    /// ëª©ì ì´ ì˜ì—­ì˜ ì¤‘ì‹¬ íŠ¸ëœìŠ¤í¼
+    /// </summary>
     Transform destination;
 
     private void Awake()
     {
-        destination = transform.GetChild(0);
+        destination = transform.GetChild(0);    // ì²«ë²ˆì§¸ ìì‹ ê°€ì ¸ì˜¤ê¸°
     }
 
     protected override IEnumerator Spawn()
     {
-        while (true)     // ¹«ÇÑ ¹İº¹(¹«ÇÑ·çÇÁ)
+        while (true)     // ë¬´í•œ ë°˜ë³µ(ë¬´í•œë£¨í”„)
         {
-            // »ı¼ºÇÏ°í »ı¼ºÇÑ ¿ÀºêÁ§Æ®¸¦ ½ºÆ÷³ÊÀÇ ÀÚ½ÄÀ¸·Î ¸¸µé±â
+            // ìƒì„±í•˜ê³  ìƒì„±í•œ ì˜¤ë¸Œì íŠ¸ë¥¼ ìŠ¤í¬ë„ˆì˜ ìì‹ìœ¼ë¡œ ë§Œë“¤ê¸°
             GameObject obj = Factory.Inst.GetObject(PoolObjectType.Asteroid);
 
-            Asteroid asteroid = obj.GetComponent<Asteroid>();   // »ı¼ºÇÑ °ÔÀÓ¿ÀºêÁ§Æ®¿¡¼­ asteroid ÄÄÆ÷³ÍÆ® °¡Á®¿À±â
-            asteroid.TargetPlayer = player;                     // asteroid¿¡ ÇÃ·¹ÀÌ¾î ¼³Á¤
+            Asteroid asteroid = obj.GetComponent<Asteroid>();   // ìƒì„±í•œ ê²Œì„ì˜¤ë¸Œì íŠ¸ì—ì„œ asteroid ì»´í¬ë„ŒíŠ¸ ê°€ì ¸ì˜¤ê¸°
+            asteroid.TargetPlayer = player;                     // asteroidì— í”Œë ˆì´ì–´ ì„¤ì •
 
-            asteroid.transform.position = transform.position;   // ½ºÆ÷³Ê À§Ä¡·Î ÀÌµ¿
-            float r = Random.Range(minY, maxY);                 // ·£´ıÇÏ°Ô Àû¿ëÇÒ ±âÁØ ³ôÀÌ ±¸ÇÏ°í
+            asteroid.transform.position = transform.position;   // ìŠ¤í¬ë„ˆ ìœ„ì¹˜ë¡œ ì´ë™
+            float r = Random.Range(minY, maxY);                 // ëœë¤í•˜ê²Œ ì ìš©í•  ê¸°ì¤€ ë†’ì´ êµ¬í•˜ê³ 
             asteroid.transform.Translate(r * Vector3.up);
 
-            yield return new WaitForSeconds(interval);  // ÀÎÅÍ¹ú¸¸Å­ ´ë±â
+            Vector3 destPos = destination.position;             // ëª©ì ì§€ ì¤‘ì‹¬ì§€ ì €ì¥
+            destPos.y = Random.Range(minY, maxY);               // ëª©ì ì§€ì˜ yê°’ë§Œ ëœë¤ìœ¼ë¡œ ì¡°ì •
+
+            // ë°©í–¥ë§Œ ë‚¨ê¸°ê¸° ìœ„í•´ normalize
+            asteroid.Direction = (destPos - asteroid.transform.position).normalized;    
+
+            yield return new WaitForSeconds(interval);  // ì¸í„°ë²Œë§Œí¼ ëŒ€ê¸°
         }
     }
 
@@ -33,21 +42,21 @@ public class SpawnerAsteroid : Spawner
     {
         base.OnDrawGizmos();
 
-        // µµÂø ¿µ¿ªÀ» Å¥ºê·Î ±×¸®±â
+        // ëª©ì ì§€ ì˜ì—­ì„ íë¸Œë¡œ ê·¸ë¦¬ê¸°
         Gizmos.color = Color.blue;
-        if (destination == null)
+        if(destination == null)    // destinationì´ ìì‹ transformì´ê¸° ë•Œë¬¸ì— í”Œë ˆì´ì „ì—ëŠ” ì—†ìŒ
         {
-            destination = transform.GetChild(0);
+            destination = transform.GetChild(0);    // í”Œë ˆì´ ì „ì¸ ìƒí™©ì´ë¼ë©´ ì°¾ì•„ì„œ ë„£ê¸°
         }
         Gizmos.DrawWireCube(destination.position,
-            new Vector3(1, Mathf.Abs(maxY) + Mathf.Abs(minY) + 2, 1));
+            new Vector3(1, Mathf.Abs(maxY) + Mathf.Abs(minY) + 2, 1));  // íë¸Œ ê·¸ë¦¬ê¸°
     }
 
     protected override void OnDrawGizmosSelected()
     {
         base.OnDrawGizmosSelected();
 
-        // ½ºÆù ÁöÁ¡À» ¼±À¸·Î ±ß±â
+        // ìŠ¤í° ì§€ì ì„ ì„ ìœ¼ë¡œ ê¸‹ê¸°
         Gizmos.color = Color.red;
         if (destination == null)
         {

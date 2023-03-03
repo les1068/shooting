@@ -4,32 +4,33 @@ using UnityEngine;
 
 public class PlanetMover : MonoBehaviour
 {
-    // ¿ŞÂÊ¿¡¼­ ¿À¸¥ÂÊÀ¸·Î ¿òÁ÷ÀÓ
-    // È­¸é ¹ÛÀ» ¹ş¾î³ª¸é ¿À¸¥ÂÊ È­¸é ¹ÛÀ¸·Î ¿òÁ÷ÀÌ±â
-    // ¿À¸§ÂÊ È­¸é ¹ÛÀ¸·Î °¥¶§ ¿òÁ÷ÀÌ´Â ¾çÀº ·£´ı¼º ¹æÇâ
-    // ¿À¸¥ÂÊ È­¸é ¹ÛÀ¸·Î °¥¶§ À§ ¾Æ·¡·Îµµ ·£´ıÇÏ°Ô ¿òÁ÷ÀÌ±â
+    // ì™¼ìª½ì—ì„œ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì›€ì§ì´ê¸°
+    // í™”ë©´ ë°–ì„ ë²—ì–´ë‚˜ë©´ ì˜¤ë¥¸ìª½ í™”ë©´ ë°–ìœ¼ë¡œ ì›€ì§ì´ê¸°
+    // ì˜¤ë¥¸ìª½ í™”ë©´ ë°–ìœ¼ë¡œ ê°ˆë•Œ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì›€ì§ì´ëŠ” ì–‘ì€ ëœë¤ì„± ê°€ë¯¸
+    // ì˜¤ë¥¸ìª½ í™”ë©´ ë°–ìœ¼ë¡œ ê°ˆë•Œ ìœ„ ì•„ë˜ë¡œë„ ëœë¤í•˜ê²Œ ì›€ì§ì´ê¸°
+
     public float moveSpeed = 10.0f;
     public float minRightEnd = 20.0f;
     public float maxRightEnd = 60.0f;
     public float minHeight = -4.0f;
-    public float mixHeight = -1.0f;
-
+    public float maxHeight = -1.0f;
+    
     float moveTriggerPosition = -16.0f;
 
     private void Awake()
     {
-        moveTriggerPosition = transform.position.x;   // Ã³À½ »ı¼º µÇ¾úÀ» ¶§ÀÇ À§Ä¡ ±â·ÏÇÏ±â
-        
+        moveTriggerPosition = transform.position.x;     // ì²˜ìŒ ìƒì„±ë˜ì—ˆì„ ë•Œì˜ ìœ„ì¹˜ ê¸°ë¡í•˜ê¸°
     }
+
     private void Update()
     {
-        transform.Translate(Time.deltaTime* moveSpeed* -transform.right);
-        if(transform.position.x < moveTriggerPosition)
+        transform.Translate(Time.deltaTime * moveSpeed * -transform.right);
+        if( transform.position.x < moveTriggerPosition)
         {
             Vector3 newPos = new Vector3(
-                Random.Range(minRightEnd,maxRightEnd),     // x Á¤ÇÏ°í
-                Random.Range(minHeight, mixHeight));       // y Á¤ÇÏ°í, z´Â ½ºÅµ °¡´É (½ºÅµÇÏ¸é 0)
-            transform.position = newPos;           // »õ À§Ä¡·Î ÀÌµ¿½ÃÅ°±â
+                Random.Range(minRightEnd, maxRightEnd), // x ì •í•˜ê³ 
+                Random.Range(minHeight, maxHeight));    // y ì •í•˜ê¸°, zëŠ” ìŠ¤í‚µ ê°€ëŠ¥(ìŠ¤í‚µí•˜ë©´ 0)
+            transform.position = newPos;    // ìƒˆ ìœ„ì¹˜ë¡œ ì´ë™ì‹œí‚¤ê¸°
         }
     }
 }
