@@ -644,6 +644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnerAsteroid
       objectReference: {fileID: 0}
+    - target: {fileID: 141771570709620683, guid: 819665eeca04a48499698b368085ea0d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 819665eeca04a48499698b368085ea0d, type: 3}
 --- !u!1001 &1588425135
@@ -705,6 +709,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8622989784951736155, guid: 5279c6c80ab05ab4b86d1454b814bdde, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 83a69eebf936e23458cf952981d95fc2, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5279c6c80ab05ab4b86d1454b814bdde, type: 3}
 --- !u!1001 &1632727836

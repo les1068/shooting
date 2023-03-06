@@ -27,7 +27,7 @@ public class AsteroidBase : Enemy_Base
     }
     
 
-    private void Awake()
+    protected virtual void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
