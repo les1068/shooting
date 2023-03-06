@@ -13,13 +13,13 @@ GameObject:
   - component: {fileID: 6944798339138505229}
   - component: {fileID: 6944798339138505227}
   - component: {fileID: 6944798339138505225}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Asteroid_Small
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6944798339138505228
 Transform:
   m_ObjectHideFlags: 0
@@ -49,9 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHitPoint: 1
   moveSpeed: 5
-  score: 10
+  score: 5
   destroyEffect: 5
-  player: {fileID: 0}
   minMoveSpeed: 2
   maxMoveSpeed: 4
   minRotateSpeed: 30

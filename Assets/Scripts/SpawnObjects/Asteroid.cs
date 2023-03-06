@@ -17,7 +17,11 @@ public class Asteroid : AsteroidBase
     int splitcount = 3;  // 파괴 될 때 생성할 오브젝트의 갯수
 
     bool isSelfCrush = false;  // 자폭 여부 표시 true면 자폭 false면 플레이어가 터트린 것
+    
+    readonly WaitForSeconds oneSecond = new WaitForSeconds(1); // 1초 대기용, 자주 사용하므로 미리 만들어 놓기 
+
     Animator anim;           // 찾아놓을 컴포넌트
+
     protected override void Awake()
     {
         base.Awake();
@@ -36,10 +40,10 @@ public class Asteroid : AsteroidBase
     }
     IEnumerator SelfCrush(float lifeTime)     // 자폭용 코루틴  // lifeTime 자폭시간
     {
-        yield return new WaitForSeconds(lifeTime - 1);
-        anim.SetTrigger("SelfCrush");
+        yield return new WaitForSeconds(lifeTime - 1);   // 1초 전까지 대기
+        anim.SetTrigger("SelfCrush");                    // 트리거 발동 시키고
 
-        yield return new WaitForSeconds(1);
+        yield return oneSecond;              // 1초 대기
         isSelfCrush= true;
         Crush();
     }
@@ -51,14 +55,14 @@ public class Asteroid : AsteroidBase
             TargetPlayer?.AddScore(score);     // 자폭 상황이 아닐 때만 점수 추가
         }
 
-        float random = Random.Range(0.0f, 1.0f);
-        if (random < criticalChance)
+        float random = Random.Range(0.0f, 1.0f);   // 0~1 사이의 값을 받기 (0이면 0%, 1이면 100%)
+        if (random < criticalChance)               // 정해진 확률 이하면 걸린 것으로 처리
         {
-            splitcount = criticalSplitcount;
+            splitcount = criticalSplitcount;      // 5%를 뚫으면 20개 생성
         }
         else
         {
-            splitcount = Random.Range(3, 8);   // 3~7개 생성
+            splitcount = Random.Range(3, 8);   // 아니면 3~7개 생성
         }
 
         float angleGap = 360.0f / splitcount;   // 작은 운석간의 사이각 계산

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 375505144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 3437175952084198763}
   - component: {fileID: 2024310380725289548}
   - component: {fileID: 640415035}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4595863984376300565}
   - component: {fileID: 6117538782654532224}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
