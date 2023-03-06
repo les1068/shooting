@@ -62,6 +62,7 @@
     <Compile Include="Assets\Input\PlayerInputActions.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Enemy1.cs" />
     <Compile Include="Assets\Scripts\Common\Pool\AsteroidPool.cs" />
+    <Compile Include="Assets\Scripts\Common\Pool\AsteroidSmallPool.cs" />
     <Compile Include="Assets\Scripts\Common\Spawner.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Bullet.cs" />
     <Compile Include="Assets\Scripts\Common\Pool\HitEffectPool.cs" />
@@ -72,23 +73,22 @@
     <Compile Include="Assets\Scripts\Common\SpawnerAsteroid.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\AsteroidBase.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Enemy2.cs" />
+    <Compile Include="Assets\Scripts\SpawnObjects\Asteroid.cs" />
     <Compile Include="Assets\Scripts\Common\Pool\EnemyPool.cs" />
     <Compile Include="Assets\Scripts\Core\Test_Base.cs" />
+    <Compile Include="Assets\Scripts\Test\Test_Asteroid.cs" />
     <Compile Include="Assets\Scripts\Common\Pool\BulletPool.cs" />
     <Compile Include="Assets\Scripts\Common\Killzone.cs" />
     <Compile Include="Assets\Scripts\Background\Scroller.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Effect.cs" />
     <Compile Include="Assets\Scripts\Common\Factory.cs" />
     <Compile Include="Assets\Scripts\Common\SpawnerEnemy.cs" />
+    <Compile Include="Assets\Scripts\SpawnObjects\Enemy_Base.cs" />
     <Compile Include="Assets\Scripts\Test\Test.cs" />
     <Compile Include="Assets\Scripts\Core\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Background\PlanetMover.cs" />
     <Compile Include="Assets\Scripts\Background\StarScroller.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreBoard.cs" />
-    <Compile Include="Assets\Scripts\SpawnObjects\Enemy_Base.cs" />
-    <Compile Include="Assets\Scripts\SpawnObjects\Asteroid.cs" />
-    <Compile Include="Assets\Scripts\Common\Pool\AsteroidSmallPool.cs" />
-    <Compile Include="Assets\Scripts\Test\Test_Asteroid.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
