@@ -23,8 +23,8 @@ public class Factory : Singleton<Factory>
     EnemyPool enemyPool;
     ExplosionEffectPool explosionPool;
     HitEffectPool hitPool;
-    AsteroidSmallPool asteroidSmallPool;
     AsteroidPool asteroidPool;
+    AsteroidSmallPool asteroidSmallPool;
 
     /// <summary>
     /// 이 싱글톤이 만들어질 때 처음 한번만 호출될 함수
@@ -79,21 +79,46 @@ public class Factory : Singleton<Factory>
                 result = GetAsteroid().gameObject;
                 break;
             case PoolObjectType.AsteroidSmall:
-                result= GetAsteroidSmall().gameObject; 
-                break;
+                result = GetAsteroidSmall().gameObject;
+                break; ;
         }
         return result;      // result를 리턴. 타입이 없는 타입이면 null
     }
-    public Bullet GetBullet() => bulletPool?.GetObject(); // Bullet풀에서 Bullet하나 꺼내는 함수
 
-    public Effect GetHitEffect() => hitPool?.GetObject();  // HitEffect풀에서 HitEffect하나 꺼내는 함수
+    /// <summary>
+    /// Bullet풀에서 Bullet하나 꺼내는 함수
+    /// </summary>
+    /// <returns></returns>
+    public Bullet GetBullet() => bulletPool?.GetObject();
 
-    public Fighter GetEnemy() => enemyPool?.GetObject();  // Enemy풀에서 Enemy하나 꺼내는 함수
+    /// <summary>
+    /// HitEffect풀에서 HitEffect하나 꺼내는 함수
+    /// </summary>
+    /// <returns></returns>
+    public Effect GetHitEffect() => hitPool?.GetObject();
 
-    public Effect GetExplosionEffect() => explosionPool?.GetObject(); // ExplosionEffect풀에서 ExplosionEffect하나 꺼내는 함수
+    /// <summary>
+    /// Enemy풀에서 Enemy하나 꺼내는 함수
+    /// </summary>
+    /// <returns></returns>
+    public Fighter GetEnemy() => enemyPool?.GetObject();
 
-    public Asteroid GetAsteroid() => asteroidPool?.GetObject(); // AsteroidPool풀에서 운석 하나 꺼내는 함수
+    /// <summary>
+    /// ExplosionEffect풀에서 ExplosionEffect하나 꺼내는 함수
+    /// </summary>
+    /// <returns></returns>
+    public Effect GetExplosionEffect() => explosionPool?.GetObject();
 
+    /// <summary>
+    /// AsteroidPool풀에서 운석 하나 꺼내는 함수
+    /// </summary>
+    /// <returns></returns>
+    public Asteroid GetAsteroid() => asteroidPool?.GetObject();
+
+    /// <summary>
+    /// AsteroidSmallPool풀에서 작은 운석 하나 꺼내는 함수
+    /// </summary>
+    /// <returns></returns>
     public AsteroidBase GetAsteroidSmall() => asteroidSmallPool?.GetObject();
 
 }

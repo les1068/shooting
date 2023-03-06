@@ -27,7 +27,7 @@ public class Test_Singleton : Test_Base
 
     protected override void Test4(InputAction.CallbackContext _)
     {
-        Factory.Inst.GetAsteroidSmall();
+        Factory.Inst.GetExplosionEffect();
     }
 
 }

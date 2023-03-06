@@ -1,32 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class AsteroidBase : Enemy_Base
+public class AsteroidBase : EnemyBase
 {
-    [Header("운석 기본데이터 ---------")]
+    [Header("운석 기본 데이터 ------------")]
+    /// <summary>
+    /// 최소 이동 속도
+    /// </summary>
+    public float minMoveSpeed = 2.0f;
 
-    public float minMoveSpeed = 2.0f;  // 최소 이동 속도
+    /// <summary>
+    /// 최대 이동 속도
+    /// </summary>
+    public float maxMoveSpeed = 4.0f;
 
-    public float maxMoveSpeed = 4.0f;    // 최대 이동 속도
+    /// <summary>
+    /// 최소 회전 속도
+    /// </summary>
+    public float minRotateSpeed = 30.0f;
 
-    public float minRotateSpeed = 30.0f;   // 최소 회전 속도
+    /// <summary>
+    /// 최대 회전 속도
+    /// </summary>
+    public float maxRotateSpeed = 360.0f;
 
-    public float maxRotateSpeed = 360.0f;  // 최대 회전 속도
+    /// <summary>
+    /// flip용 스프라이트 랜더러
+    /// </summary>
+    SpriteRenderer spriteRenderer;
 
-    SpriteRenderer spriteRenderer;    // flip용 스프라이트 랜더러
-  
-    float rotateSpeed = 30.0f;  // 실제 회전 속도(초당 회전 각도(도:degree))
+    /// <summary>
+    /// 실제 회전 속도(초당 회전 각도(도:degree))
+    /// </summary>
+    float rotateSpeed = 30.0f;
 
-    Vector3 dir = Vector3.left;  // 운석의 이동 방향
+    /// <summary>
+    /// 운석의 이동 방향
+    /// </summary>
+    Vector3 dir = Vector3.left;
 
-    public Vector3 Direction   // 운석의 이동 방향 설정용 프로퍼티
+    /// <summary>
+    /// 운석의 이동 방향 설정용 프로퍼티
+    /// </summary>
+    public Vector3 Direction
     {
         set => dir = value;
     }
     
-
     protected virtual void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -35,6 +56,7 @@ public class AsteroidBase : Enemy_Base
     protected override void OnEnable()
     {
         base.OnEnable();
+
         // 랜덤으로 이동 속도 결정
         moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
 
@@ -67,5 +89,4 @@ public class AsteroidBase : Enemy_Base
         Gizmos.color = Color.white;
         Gizmos.DrawLine(transform.position, transform.position + dir * 1.5f);
     }
-    
 }
