@@ -23,9 +23,9 @@ public class Player : MonoBehaviour
     public PoolObjectType bulletType;
 
     /// <summary>
-    /// 발사 위치 표시용 트랜스폼
+    /// 발사 위치 표시용 트랜스폼들
     /// </summary>
-    private Transform fireTransform;
+    private Transform[] fireTransforms;
 
     /// <summary>
     /// 총알 발사 이팩트
@@ -62,6 +62,37 @@ public class Player : MonoBehaviour
     /// </summary>
     IEnumerator fireCoroutine;
 
+    /// <summary>
+    /// 현재 플레이어의 파워
+    /// </summary>
+    int power = 0;
+
+    /// <summary>
+    /// 총알 간 간격
+    /// </summary>
+    float fireAngle = 30.0f;
+
+    /// <summary>
+    /// 파워가 최대치일 때 파워업 아이템을 먹으면 얻는 보너스
+    /// </summary>
+    int extraPowerBonus = 300;
+
+    /// <summary>
+    /// 파워를 증감시키기 위한 프로퍼티(설정시 추가처리 있음)
+    /// </summary>
+    private int Power
+    {
+        get => power;
+        set
+        {
+            power = value;
+            if (power > 3)                      // 3을 넘어가면 
+                AddScore(extraPowerBonus);      // 보너스 점수 추가
+            power = Mathf.Clamp(power, 1, 3);   // 1~3사이로 설정되게 Clamp 처리
+
+            RefreshFirePostions(power);         // FireTransforms의 위치와 회전 처리
+        }
+    }
 
     // 델리게이트(Delegate) : 신호를 보내는 것. 함수를 등록할 수 있다.
 
@@ -106,7 +137,13 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();            // GetComponent는 성능 문제가 있기 때문에 한번만 찾도록 코드 작성
         rigid = GetComponent<Rigidbody2D>();
         inputActions = new PlayerInputActions();
-        fireTransform = transform.GetChild(0);
+        Transform fireRoot = transform.GetChild(0);
+        fireTransforms = new Transform[fireRoot.childCount];
+        for (int i = 0;i < fireRoot.childCount; i++)
+        {
+            fireTransforms[i] = fireRoot.GetChild(i);
+        }
+
         fireFlash = transform.GetChild(1).gameObject;        
         fireFlash.SetActive(false);
 
@@ -143,6 +180,8 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("Start");
         //gameObject.SetActive(false);  // 게임 오브젝트 비활성화 시키기
+        
+        Power = 1;  // power는 1로 시작
     }
 
     // 매 프레임마다 계속 실행되는 함수
@@ -208,6 +247,11 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //Debug.Log($"충돌영역에 들어감 - 충돌 대상 : {collision.gameObject.name}");
+        if(collision.gameObject.CompareTag("PowerUp"))
+        {
+            Power++;
+            collision.gameObject.SetActive(false);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -254,9 +298,15 @@ public class Player : MonoBehaviour
     IEnumerator FireCoroutine()
     {
         while (true)
-        {
-            GameObject obj = Factory.Inst.GetObject(bulletType);   // bulletType에 맞는 총알 생성
-            obj.transform.position = fireTransform.position;    // 위치 변경
+        {            
+            for(int i=0;i<power;i++)
+            {
+                GameObject obj = Factory.Inst.GetObject(bulletType);   // bulletType에 맞는 총알 생성
+                Transform firePos = fireTransforms[i];
+                obj.transform.position = firePos.position;
+                obj.transform.rotation = firePos.rotation;
+            }
+            
             StartCoroutine(FlashEffect());                      // flash 이팩트 깜박이기
             yield return new WaitForSeconds(fireInterval);      // 연사 간격만큼 대기
         }
@@ -292,5 +342,38 @@ public class Player : MonoBehaviour
     public void AddScore(int plus)
     {
         Score += plus;
+    }
+
+    private void RefreshFirePostions(int power)
+    {
+        // 기존 fireRoot의 자식 비활성화 하기
+        for (int i = 0; i < fireTransforms.Length; i++)
+        {
+            fireTransforms[i].gameObject.SetActive(false);
+        }
+
+        // fireRoot에 power 숫자에 맞게 자식 활성화
+        for(int i=0;i<power;i++)
+        {
+            // 파워1: 0
+            // 파워2: -15, 15
+            // 파워3: -30, 0, 30
+            
+            Transform firePos = fireTransforms[i];
+            firePos.localPosition = Vector3.zero;
+            firePos.rotation = Quaternion.Euler(0, 0, (power - 1) * (fireAngle * 0.5f) + i * -fireAngle);
+            firePos.Translate(1, 0, 0);
+
+            // 파워1 : (1 - 1) * (30 * 0.5f) + 0 * -30 = 0
+            // 파워2
+            //  i = 0) (2 - 1) * (30 * 0.5f) + 0 * -30 = 15
+            //  i = 1) (2 - 1) * (30 * 0.5f) + 1 * -30 = -15
+            // 파워3
+            //  i = 0) (3 - 1) * (30 * 0.5f) + 0 * -30 = 30
+            //  i = 1) (3 - 1) * (30 * 0.5f) + 1 * -30 = 0
+            //  i = 2) (3 - 1) * (30 * 0.5f) + 2 * -30 = -30
+
+            fireTransforms[i].gameObject.SetActive(true);
+        }
     }
 }
