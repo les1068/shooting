@@ -140,12 +140,12 @@ MonoBehaviour:
   maxHitPoint: 1
   moveSpeed: 1.5
   score: 30
-  destroyEffect: 5
+  destroyEffect: 6
   minMoveSpeed: 2
   maxMoveSpeed: 4
   minRotateSpeed: 30
   maxRotateSpeed: 360
-  childType: 4
+  childType: 5
   minLifeTime: 4
   maxLifeTime: 7
   criticalChance: 0.05

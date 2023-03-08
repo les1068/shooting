@@ -24,6 +24,7 @@ public class Test_PowerUp : Test_Base
 
     protected override void Test3(InputAction.CallbackContext _)
     {
+        //player.Power = 3;
         player.AddScore(10);
     }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlanetMover : MonoBehaviour
 {
-    
     // 왼쪽에서 오른쪽으로 움직이기
     // 화면 밖을 벗어나면 오른쪽 화면 밖으로 움직이기
     // 오른쪽 화면 밖으로 갈때 오른쪽으로 움직이는 양은 랜덤성 가미
@@ -15,7 +14,6 @@ public class PlanetMover : MonoBehaviour
     public float maxRightEnd = 60.0f;
     public float minHeight = -4.0f;
     public float maxHeight = -1.0f;
-    
     
     float moveTriggerPosition = -16.0f;
 

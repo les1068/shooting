@@ -4,16 +4,49 @@ using UnityEngine;
 
 public class SpecialFighter : EnemyBase
 {
+    [Header("íŠ¹ìˆ˜ì  ë°ì´í„° ---------------")]
+    /// <summary>
+    /// ì²˜ìŒ ë“±ì¥ ì†ë„ ë° íƒˆì¶œ ì†ë„
+    /// </summary>
+    public float startSpeed = 10.0f;
+
+    /// <summary>
+    /// ë“±ì¥ ì‹œê°„
+    /// </summary>
+    public float appearTime = 0.5f;
+
+    /// <summary>
+    /// ë“±ì¥ í›„ ëŒ€ê¸° ì‹œê°„
+    /// </summary>
+    public float waitTime = 5.0f;
+
     protected override void OnEnable()
     {
-        base.OnEnable();  // ±âÁ¸ ÃÊ±âÈ­ ÀÛ¾÷ ÁøÇà
-
-        // Ã³À½¿¡ ºü¸£°Ô ¿òÁ÷ÀÌ°í ±â´Ù¸®´Ù°¡ ´Ù½Ã ºü¸£°Ô ¿òÁ÷ÀÎ´Ù.  
+        base.OnEnable();    // ê¸°ì¡´ ì´ˆê¸°í™” ì‘ì—… ì§„í–‰
+        StopAllCoroutines();                // ê¸°ì¡´ ì½”ë£¨í‹´ ì´ˆê¸°í™”
+        StartCoroutine(SpawnProduce());     // ì´ˆë°˜ ì½”ë£¨í‹´ ì‹¤í–‰
     }
+
+    IEnumerator SpawnProduce()
+    {
+        moveSpeed = startSpeed;                         // ì²˜ìŒì—ëŠ” ì†ë„ë¥¼ ë¹ ë¥´ê²Œ ì„¤ì •
+        yield return new WaitForSeconds(appearTime);    // ë“±ì¥ì— ê±¸ë¦¬ëŠ” ì‹œê°„ì´ ë‹¤ë  ë•Œê¹Œì§€ ë¹ ë¥´ê²Œ ë“±ì¥
+        moveSpeed = 0.0f;                               // ì •ì§€ì‹œí‚¤ê¸°
+        yield return new WaitForSeconds(waitTime);      // ëŒ€ê¸° ì‹œê°„ë§Œí¼ ì •ì§€
+        moveSpeed = startSpeed;                         // ëŒ€ê¸° ì‹œê°„ì´ ëë‚˜ë©´ ì›ë˜ ì†ë„ë¡œ ëŒì•„ê°€ê¸°
+    }
+
+    private void Update()
+    {
+        // ì´ˆë‹¹ moveSpeedì˜ ì†ë„ë¡œ ì™¼ìª½ìœ¼ë¡œ ì´ë™
+        transform.Translate(Time.deltaTime * moveSpeed * Vector3.left);
+    }
+
     protected override void OnCrush()
     {
-        base.OnCrush(); // ±âÁ¸ ÆøÆÄÃ³¸®
-        GameObject obj =  Factory.Inst.GetObject(PoolObjectType.PowerUp); // ÆÄ¿ö¾÷ ¾ÆÀÌÅÛ »ı¼º
-        obj.transform.position = transform.position;    // ÇöÀç ³» À§Ä¡·Î ¿Å±â±â
+        base.OnCrush(); // ê¸°ì¡´ í­íŒŒ ì²˜ë¦¬
+
+        GameObject obj = Factory.Inst.GetObject(PoolObjectType.PowerUp);    // íŒŒì›Œì—… ì•„ì´í…œ ìƒì„±
+        obj.transform.position = transform.position;        // í˜„ì¬ ë‚´ ìœ„ì¹˜ë¡œ ì˜®ê¸°ê¸°
     }
 }
