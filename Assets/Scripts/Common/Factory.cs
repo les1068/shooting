@@ -10,7 +10,8 @@ public enum PoolObjectType
     Enemy,
     Asteroid,
     AsteroidSmall,
-    Explosion
+    Explosion,
+    PowerUp
 }
 
 /// <summary>
@@ -25,6 +26,7 @@ public class Factory : Singleton<Factory>
     HitEffectPool hitPool;
     AsteroidPool asteroidPool;
     AsteroidSmallPool asteroidSmallPool;
+    PowerUpPool powerUpPool;
 
     /// <summary>
     /// 이 싱글톤이 만들어질 때 처음 한번만 호출될 함수
@@ -38,6 +40,8 @@ public class Factory : Singleton<Factory>
         hitPool = GetComponentInChildren<HitEffectPool>();
         asteroidPool = GetComponentInChildren<AsteroidPool>();
         asteroidSmallPool = GetComponentInChildren<AsteroidSmallPool>();
+        powerUpPool = GetComponentInChildren<PowerUpPool>();
+
     }
 
     /// <summary>
@@ -51,6 +55,7 @@ public class Factory : Singleton<Factory>
         hitPool?.Initialize();
         asteroidPool?.Initialize();
         asteroidSmallPool?.Initialize();
+        powerUpPool?.Initialize();
     }
 
     /// <summary>
@@ -80,7 +85,11 @@ public class Factory : Singleton<Factory>
                 break;
             case PoolObjectType.AsteroidSmall:
                 result = GetAsteroidSmall().gameObject;
-                break; ;
+                break;
+            case PoolObjectType.PowerUp:
+                result = GetPowerUp().gameObject;
+                break;
+
         }
         return result;      // result를 리턴. 타입이 없는 타입이면 null
     }
@@ -120,5 +129,7 @@ public class Factory : Singleton<Factory>
     /// </summary>
     /// <returns></returns>
     public AsteroidBase GetAsteroidSmall() => asteroidSmallPool?.GetObject();
+
+    public PowerUp GetPowerUp() => powerUpPool?.GetObject();
 
 }

@@ -375,5 +375,6 @@ public class Player : MonoBehaviour
 
             fireTransforms[i].gameObject.SetActive(true);
         }
+       
     }
 }
