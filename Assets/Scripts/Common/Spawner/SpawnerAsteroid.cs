@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class SpawnerAsteroid : Spawner
 {
-    /// <summary>
-    /// 목적이 영역의 중심 트랜스폼
-    /// </summary>
-    Transform destination;
+    Transform destination;  // 목적이 영역의 중심 트랜스폼
 
     private void Awake()
     {

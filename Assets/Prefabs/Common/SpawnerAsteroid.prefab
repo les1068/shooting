@@ -79,4 +79,4 @@ MonoBehaviour:
   objectType: 4
   minY: -4
   maxY: 4
-  interval: 1
+  interval: 5

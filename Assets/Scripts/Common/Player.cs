@@ -7,80 +7,54 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    /// <summary>
-    /// 플레이어의 이동 속도
-    /// </summary>
-    public float speed = 10.0f;
+    //---------------------------------------------------------------------------------------
+    [Header("플레이어 데이터")]
 
-    /// <summary>
-    /// 총알 발사 간격
-    /// </summary>
-    public float fireInterval = 0.5f;
+    public float speed = 10.0f;  // 플레이어의 이동 속도
 
-    /// <summary>
-    /// 플레이어의 총알 타입
-    /// </summary>
-    public PoolObjectType bulletType;
+    public float invincibleTime = 2.0f; // 피격 되었을 때의 무적 시간
 
-    /// <summary>
-    /// 발사 위치 표시용 트랜스폼들
-    /// </summary>
-    private Transform[] fireTransforms;
+    private bool isInvincibleMode = false;  // 무적 상태인지 아닌지 표시용
 
-    /// <summary>
-    /// 총알 발사 이팩트
-    /// </summary>
-    private GameObject fireFlash;
+    private float timeElapsed = 0.0f;  // 무적일 때 시간 누적용(cos에서 사용할 용도)
 
-    /// <summary>
-    /// 에니메이터 컴포넌트
-    /// </summary>
-    private Animator anim;
+    public int initialLife = 3;  // 시작할 때 생명
 
-    /// <summary>
-    /// 리지드바디2D 컴포넌트
-    /// </summary>
-    private Rigidbody2D rigid;
+    private int life = 3;  // 현재 생명
 
-    /// <summary>
-    /// 입력처리용 InputAction
-    /// </summary>
-    private PlayerInputActions inputActions;
+    private bool isDead = false; // 사망 표시
+    private int Life  // 수명 처리용 프로퍼티
+    {
+        get => life;
+        set
+        {
+            if (!isDead)
+            {
+                if (life > value)
+                {
+                    // 라이프가 감소한 상황이면
+                    OnHit();  // 맞았을 때의 동작이 있는 함수
+                }
+                life = value;
+                Debug.Log($"Life : {life}");
+                if ( life <= 0)
+                {
+                    OnDie();  // 죽었을 때의 동작이 있는 함수 실행
+                }
+                OnLifeChange?.Invoke(life);  // 델리게이트에 연결된 함수들 실행
+            }
 
-    /// <summary>
-    /// 현재 입력된 입력 방향
-    /// </summary>
-    private Vector3 inputDir = Vector3.zero;
+        }
+    }
 
-    /// <summary>
-    /// 플레이어의 점수
-    /// </summary>
-    private int score = 0;
+    
+    public Action<int> OnLifeChange;  // 수명이 변경되었을 때 실행될 델리게이트
 
-    /// <summary>
-    /// 연사용 코루틴을 저장할 변수
-    /// </summary>
-    IEnumerator fireCoroutine;
+    private int score = 0;  // 플레이어의 점수
+    int power = 0;  // 현재 플레이어의 파워
+    int extraPowerBonus = 300;  // 파워가 최대치일 때 파워업 아이템을 먹으면 얻는 보너스
 
-    /// <summary>
-    /// 현재 플레이어의 파워
-    /// </summary>
-    int power = 0;
-
-    /// <summary>
-    /// 총알 간 간격
-    /// </summary>
-    float fireAngle = 30.0f;
-
-    /// <summary>
-    /// 파워가 최대치일 때 파워업 아이템을 먹으면 얻는 보너스
-    /// </summary>
-    int extraPowerBonus = 300;
-
-    /// <summary>
-    /// 파워를 증감시키기 위한 프로퍼티(설정시 추가처리 있음)
-    /// </summary>
-    private int Power
+    private int Power  // 파워를 증감시키기 위한 프로퍼티(설정시 추가처리 있음)
     {
         get => power;
         set
@@ -93,20 +67,43 @@ public class Player : MonoBehaviour
             RefreshFirePostions(power);         // FireTransforms의 위치와 회전 처리
         }
     }
-
     // 델리게이트(Delegate) : 신호를 보내는 것. 함수를 등록할 수 있다.
-
-    /// <summary>
-    /// 점수가 변경되면 실행될 델리게이트. 파라메터가 int 하나이고 리턴타입이 void인 함수를 등록할 수 있다.
-    /// </summary>
-    public Action<int> onScoreChange;    
-
-
+    public Action<int> onScoreChange;  // 점수가 변경되면 실행될 델리게이트. 파라메터가 int 하나이고 리턴타입이 void인 함수를 등록할 수 있다.
     // 프로퍼티(Property) : 값을 넣거나 읽을 때 추가적으로 할일이 많을 때 사용
+    
+    //---------------------------------------------------------------------------------------
+    [Header("총알")]
 
-    /// <summary>
-    /// 플레이어의 점수를 확인할 수 있는 프로퍼티(읽기 전용)
-    /// </summary>
+    public float fireInterval = 0.5f;  // 총알 발사 간격
+
+
+    public PoolObjectType bulletType;  // 플레이어의 총알 타입
+
+
+    private Transform[] fireTransforms;  // 발사 위치 표시용 트랜스폼들
+
+    private GameObject fireFlash;  // 총알 발사 이팩트
+
+    IEnumerator fireCoroutine;  // 연사용 코루틴을 저장할 변수
+
+    //---------------------------------------------------------------------------------------
+    [Header("컴포넌트")]
+
+    private Animator anim;  // 에니메이터 컴포넌트
+
+    private Rigidbody2D rigid;  // 리지드바디2D 컴포넌트
+
+    private SpriteRenderer spriteRenderer;  // 스프라이트 랜더러 컴포넌트
+
+    //---------------------------------------------------------------------------------------
+    [Header("입력값")]
+
+    private PlayerInputActions inputActions;  // 입력처리용 InputAction
+
+    private Vector3 inputDir = Vector3.zero;  // 현재 입력된 입력 방향
+
+    float fireAngle = 30.0f;
+    
     public int Score    
     {
         // get : 다른 곳에서 특정 값을 확인할 때 사용됨
@@ -136,6 +133,7 @@ public class Player : MonoBehaviour
     {
         anim = GetComponent<Animator>();            // GetComponent는 성능 문제가 있기 때문에 한번만 찾도록 코드 작성
         rigid = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         inputActions = new PlayerInputActions();
         Transform fireRoot = transform.GetChild(0);
         fireTransforms = new Transform[fireRoot.childCount];
@@ -182,6 +180,8 @@ public class Player : MonoBehaviour
         //gameObject.SetActive(false);  // 게임 오브젝트 비활성화 시키기
         
         Power = 1;  // power는 1로 시작
+
+        life = initialLife; // 초기 생명 설정
     }
 
     // 매 프레임마다 계속 실행되는 함수
@@ -224,7 +224,7 @@ public class Player : MonoBehaviour
     //    //Debug.Log(Time.deltaTime);
     //}
 
-    private void FixedUpdate()
+    private void FixedUpdate()  // 일정한 시간 간격으로 호출되는 업데이트 함수(물리처리용)
     {
         /// 항상 일정한 시간 간격으로 실행되는 업데이트
         /// 물리 연산이 들어가는 것은 이쪽에서 실행
@@ -243,33 +243,34 @@ public class Player : MonoBehaviour
         rigid.MovePosition(transform.position + Time.fixedDeltaTime * speed * inputDir);
 
     }
-
+    private void Update()
+    {
+        if(isInvincibleMode)
+        {
+            timeElapsed += Time.deltaTime * 30;   // 1초당으로 처리하면 한번깜빡이는데 3.141592... 초가 필요
+            float alpha = (MathF.Cos(timeElapsed) +1.0f) * 0.5f;  // cos 결과를 1~0~1로 변경
+            spriteRenderer.color = new Color(1,1,1,alpha);
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log($"충돌영역에 들어감 - 충돌 대상 : {collision.gameObject.name}");
-        if(collision.gameObject.CompareTag("PowerUp"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Power++;
+            Life--;
+        }
+        else if (collision.gameObject.CompareTag("PowerUp"))
+        {
+            power++;
             collision.gameObject.SetActive(false);
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        //Debug.Log($"충돌영역에서 나감 - 충돌 대상 : {collision.gameObject.name}");        
-    }
-
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    Debug.Log("충돌영역에 접촉해 있으면서 움직이는 중");
-    //}
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision) // 충돌 했을 때 실행되는 함수(2D용)
     {
         //Debug.Log($"트리거 안에 들어감 - 대상 트리거 : {collision.gameObject.name}");
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerExit2D(Collider2D collision)  // 발사 입력 처리용 함수
     {
         //Debug.Log($"트리거에서 나감 - 대상 트리거 : {collision.gameObject.name}");        
     }
@@ -279,7 +280,7 @@ public class Player : MonoBehaviour
     //    Debug.Log("트리거 안에서 움직임");        
     //}
 
-    private void OnFireStart(InputAction.CallbackContext _)
+    private void OnFireStart(InputAction.CallbackContext _)  // 발사 중지 입력 처리용 함수
     {
         //Debug.Log("Fire");
 
@@ -291,11 +292,8 @@ public class Player : MonoBehaviour
         StopCoroutine(fireCoroutine);       // 땠을 때 코루틴 정지
     }
 
-    /// <summary>
-    /// 연사용 코루틴 함수
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator FireCoroutine()
+
+    IEnumerator FireCoroutine()  // 연사용 코루틴 함수
     {
         while (true)
         {            
@@ -312,11 +310,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// flash가 깜빡하는 코루틴
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator FlashEffect()
+    IEnumerator FlashEffect()   // flash가 깜빡하는 코루틴
     {
         fireFlash.SetActive(true);              // 켜고
         yield return new WaitForSeconds(0.1f);  // 0.1초 대기하고
@@ -335,11 +329,32 @@ public class Player : MonoBehaviour
         inputDir = dir;
     }
 
-    /// <summary>
-    /// Score에 점수를 추가하는 함수
-    /// </summary>
-    /// <param name="plus">추가할 점수</param>
-    public void AddScore(int plus)
+    private void OnHit()  // 맞았을 때 실행되는 함수
+    {
+        Power--;                                // 파워 1줄이고
+        StartCoroutine(EnterInvincibleMode());  // 무적모드 들어가기
+    }
+    IEnumerator EnterInvincibleMode()  // 무적상태 진입용 코루틴
+    {
+        gameObject.layer = LayerMask.NameToLayer("Invincible");  // 레이어를 무적 레이어로 변경
+        isInvincibleMode = true;  // 무적 모드로 들어갔다고 표시
+        timeElapsed = 0.0f;       // 시간 카운터 초기화
+
+        yield return new WaitForSeconds(invincibleTime);   // invincibleTime만큼 기다리기
+
+        spriteRenderer.color = Color.white;          // 색이 변한 상태에서 무적모드가 끝날 때를 대비해서 색상도 초기화
+         
+        isInvincibleMode = false;                    // 무적 모드 끝났다고 표시
+        gameObject.layer = LayerMask.NameToLayer("Player");  // 레이어 되돌리기
+    }
+
+    private void OnDie()
+    {
+        isDead = true;
+        life = 0;
+    }
+
+    public void AddScore(int plus)  // Score에 점수를 추가하는 함수
     {
         Score += plus;
     }
@@ -364,14 +379,14 @@ public class Player : MonoBehaviour
             firePos.rotation = Quaternion.Euler(0, 0, (power - 1) * (fireAngle * 0.5f) + i * -fireAngle);
             firePos.Translate(1, 0, 0);
 
-            // 파워1 : (1 - 1) * (30 * 0.5f) + 0 * -30 = 0
-            // 파워2
-            //  i = 0) (2 - 1) * (30 * 0.5f) + 0 * -30 = 15
-            //  i = 1) (2 - 1) * (30 * 0.5f) + 1 * -30 = -15
-            // 파워3
-            //  i = 0) (3 - 1) * (30 * 0.5f) + 0 * -30 = 30
-            //  i = 1) (3 - 1) * (30 * 0.5f) + 1 * -30 = 0
-            //  i = 2) (3 - 1) * (30 * 0.5f) + 2 * -30 = -30
+           /*파워1: (1 - 1) * (30 * 0.5f) + 0 * -30 = 0
+             파워2
+              i = 0) (2 - 1) * (30 * 0.5f) + 0 * -30 = 15
+              i = 1) (2 - 1) * (30 * 0.5f) + 1 * -30 = -15
+             파워3
+              i = 0) (3 - 1) * (30 * 0.5f) + 0 * -30 = 30
+              i = 1) (3 - 1) * (30 * 0.5f) + 1 * -30 = 0
+              i = 2) (3 - 1) * (30 * 0.5f) + 2 * -30 = -30*/
 
             fireTransforms[i].gameObject.SetActive(true);
         }

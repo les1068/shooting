@@ -5,31 +5,16 @@ using UnityEngine;
 // 게임 오브젝트를 주기적으로 생성할 클래스
 public class Spawner : MonoBehaviour
 {
-    /// <summary>
-    /// 생성할 오브젝트의 타입
-    /// </summary>
-    public PoolObjectType objectType;
+    public PoolObjectType objectType;  // 생성할 오브젝트의 타입
 
-    /// <summary>
-    /// 생성할 위치(최소값)
-    /// </summary>
-    public float minY = -4;
+    public float minY = -4;  // 생성할 위치(최소값)
 
-    /// <summary>
-    /// 생성할 위치(최대값)
-    /// </summary>
-    public float maxY = 4;
+    public float maxY = 4;   // 생성할 위치(최대값)
 
-    /// <summary>
-    /// 생성 시간 간격
-    /// </summary>
-    public float interval = 1.0f;
+    public float interval = 1.0f;  // 생성 시간 간격
     //WaitForSeconds wait;
 
-    /// <summary>
-    /// 게임 내의 플레이어에 대한 참조
-    /// </summary>
-    protected Player player = null;
+    protected Player player = null;  // 게임 내의 플레이어에 대한 참조
 
     private void Start()
     {
@@ -39,12 +24,7 @@ public class Spawner : MonoBehaviour
                 
         StartCoroutine(Spawn());    // 시작할 때 Spawn 코루틴 시작
     }
-
-    /// <summary>
-    /// 오브젝트를 주기적으로 생성하는 코루틴
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator Spawn()
+    private IEnumerator Spawn()  // 오브젝트를 주기적으로 생성하는 코루틴
     {
         while(true)
         {

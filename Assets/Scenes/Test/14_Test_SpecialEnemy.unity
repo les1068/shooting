@@ -283,10 +283,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 141771570709620681, guid: 819665eeca04a48499698b368085ea0d, type: 3}
-      propertyPath: interval
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 141771570709620683, guid: 819665eeca04a48499698b368085ea0d, type: 3}
       propertyPath: m_Name
       value: SpawnerAsteroid
@@ -758,6 +754,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3437175952084198756, guid: 07b2cc3fa1235904ba105692970ec0db, type: 3}
+      propertyPath: invincibleTime
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3437175952084198757, guid: 07b2cc3fa1235904ba105692970ec0db, type: 3}
       propertyPath: m_RootOrder
       value: 7

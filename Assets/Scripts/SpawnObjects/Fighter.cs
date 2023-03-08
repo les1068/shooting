@@ -5,31 +5,17 @@ using UnityEngine;
 public class Fighter : EnemyBase
 {
     [Header("비행기 데이터 ---------------")]
-    /// <summary>
-    /// 적 위아래 이동 정도(비율)
-    /// </summary>
+
     [Range(0.1f, 3.0f)]         // 변수 범위를 (min,max)사이로 변경시키는 슬라이더 추가
     public float amplitude = 1; // 사인 결과값을 증폭시킬 변수(위아래 차이 결정)
 
-    /// <summary>
-    /// 위아래로 한번 움직이는데 걸리는 거리(비율)
-    /// </summary>
     public float frequency = 1; // 사인 그래프가 한번 도는데 걸리는 시간(가로 폭 결정)
             
-    /// <summary>
-    /// 누적 시간(사인 계산용)
-    /// </summary>
-    float timeElapsed = 0.0f;
+    float timeElapsed = 0.0f;  // 누적 시간(사인 계산용)
 
-    /// <summary>
-    /// 처음 등장한 위치
-    /// </summary>
-    float baseY;
+    float baseY;  // 처음 등장한 위치
 
-    /// <summary>
-    /// 적이 위아래로 움직이는 기준 위치 설정하는 프로퍼티(월드 기준, 쓰기 전용)
-    /// </summary>
-    public float BaseY
+    public float BaseY  // 적이 위아래로 움직이는 기준 위치 설정하는 프로퍼티(월드 기준, 쓰기 전용)
     {
         set => baseY = value;
     }
