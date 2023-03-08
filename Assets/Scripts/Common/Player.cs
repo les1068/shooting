@@ -46,8 +46,6 @@ public class Player : MonoBehaviour
 
         }
     }
-
-    
     public Action<int> OnLifeChange;  // 수명이 변경되었을 때 실행될 델리게이트
 
     private int score = 0;  // 플레이어의 점수
@@ -260,7 +258,7 @@ public class Player : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("PowerUp"))
         {
-            power++;
+            Power++;
             collision.gameObject.SetActive(false);
         }
     }
