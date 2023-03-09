@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     private int life = 3;  // 현재 생명
 
     private bool isDead = false; // 사망 표시
+
+    public PoolObjectType explosion = PoolObjectType.Explosion;  // 플레이어 비행기 터지는 이팩트
     private int Life  // 수명 처리용 프로퍼티
     {
         get => life;
@@ -153,9 +155,9 @@ public class Player : MonoBehaviour
         //inputActions.Player.Fire.started;       // 버튼을 누른 직후
         //inputActions.Player.Fire.performed;     // 버튼을 충분히 눌렀을 때
         //inputActions.Player.Fire.canceled;      // 버튼을 땐 직후
+
         inputActions.Player.Fire.performed += OnFireStart;
         inputActions.Player.Fire.canceled += OnFireStop;
-        inputActions.Player.Bomb.performed += OnBomb;
         inputActions.Player.Move.performed += OnMoveInput;
         inputActions.Player.Move.canceled += OnMoveInput;
     }
@@ -163,12 +165,7 @@ public class Player : MonoBehaviour
     // 이 게임 오브젝트가 비활성화 될 때 실행되는 함수
     private void OnDisable()
     {
-        inputActions.Player.Move.canceled -= OnMoveInput;
-        inputActions.Player.Move.performed -= OnMoveInput;
-        inputActions.Player.Bomb.performed -= OnBomb;
-        inputActions.Player.Fire.canceled -= OnFireStop;
-        inputActions.Player.Fire.performed -= OnFireStart;
-        inputActions.Player.Disable();
+        InputDisable();
     }
 
     // 시작할 때 한번 실행되는 함수
@@ -237,8 +234,15 @@ public class Player : MonoBehaviour
         // 특정 방향으로 힘을 가하는 것.
         // 관성이 있다.
         // 움직일 때 물리적으로 막히면 거기서부터는 진행을 하지 않는다.
-
-        rigid.MovePosition(transform.position + Time.fixedDeltaTime * speed * inputDir);
+        if (isDead)
+        {
+            rigid.AddForce(Vector2.left * 0.3f, ForceMode2D.Impulse);  // 왼쪽으로 폭팔적으로 힘 추가
+            rigid.AddTorque(50.0f);                                    // 반시계 방향으로 회전
+        }
+        else
+        {
+            rigid.MovePosition(transform.position + Time.fixedDeltaTime * speed * inputDir);
+        }
 
     }
     private void Update()
@@ -326,6 +330,14 @@ public class Player : MonoBehaviour
         anim.SetFloat("InputY", dir.y);         // 에니메이터에 있는 InputY 파라메터에 dir.y값을 준다.
         inputDir = dir;
     }
+    private void InputDisable()
+    {
+        inputActions.Player.Move.canceled -= OnMoveInput;
+        inputActions.Player.Move.performed -= OnMoveInput;
+        inputActions.Player.Fire.canceled -= OnFireStop;
+        inputActions.Player.Fire.performed -= OnFireStart;
+        inputActions.Player.Disable();
+    }
 
     private void OnHit()  // 맞았을 때 실행되는 함수
     {
@@ -345,13 +357,31 @@ public class Player : MonoBehaviour
         isInvincibleMode = false;                    // 무적 모드 끝났다고 표시
         gameObject.layer = LayerMask.NameToLayer("Player");  // 레이어 되돌리기
     }
-
     private void OnDie()
     {
         isDead = true;
         life = 0;
-    }
 
+        Collider2D bodyCollider = GetComponent<Collider2D>();
+        bodyCollider.enabled = false;                           // 컬라이더 꺼서 양향력 제거
+
+        GameObject effect = Factory.Inst.GetObject(explosion);  // 터지는 이팩트 만들고
+        effect.transform.position = transform.position;         // 이팩트 내 위치에 배치
+
+        InputDisable();                 // 입력 막기
+        inputDir = Vector3.zero;        // 이동 입력도 초기화
+
+        StopCoroutine(fireCoroutine);   // 총을 쏘던 중이면 더 이상 쏘지 않게 만들기
+
+        // 무적모드 취소
+        spriteRenderer.color = Color.white;
+        isInvincibleMode = false;
+        gameObject.layer = LayerMask.NameToLayer("Player");
+
+        rigid.gravityScale = 1.0f;      // 중력 다시 적용
+        rigid.freezeRotation = false;   // 회전도 풀기
+
+    }
     public void AddScore(int plus)  // Score에 점수를 추가하는 함수
     {
         Score += plus;
