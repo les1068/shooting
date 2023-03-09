@@ -97,6 +97,9 @@
     <Compile Include="Assets\Scripts\Background\StarScroller.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreBoard.cs" />
     <Compile Include="Assets\Scripts\UI\LifePanel.cs" />
+    <Compile Include="Assets\Scripts\UI\GameOverPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\RankLine.cs" />
+    <Compile Include="Assets\Scripts\UI\RankPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
