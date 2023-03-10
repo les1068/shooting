@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Common\Pool\AsteroidPool.cs" />
     <Compile Include="Assets\Scripts\Test\Test_SpecialEnemy.cs" />
     <Compile Include="Assets\Scripts\Common\Spawner\Spawner.cs" />
+    <Compile Include="Assets\Scripts\UI\RankLine.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Bullet.cs" />
     <Compile Include="Assets\Scripts\Common\Pool\HitEffectPool.cs" />
     <Compile Include="Assets\Scripts\Test\Test_PowerUp.cs" />
@@ -87,19 +88,19 @@
     <Compile Include="Assets\Scripts\Common\Killzone.cs" />
     <Compile Include="Assets\Scripts\Background\Scroller.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Effect.cs" />
+    <Compile Include="Assets\Scripts\UI\LifePanel.cs" />
     <Compile Include="Assets\Scripts\Common\Factory.cs" />
     <Compile Include="Assets\Scripts\Common\Spawner\SpawnerEnemy.cs" />
+    <Compile Include="Assets\Scripts\UI\GameOverPanel.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\PowerUp.cs" />
+    <Compile Include="Assets\Scripts\UI\RankPanel.cs" />
     <Compile Include="Assets\Scripts\Test\Test.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\SpecialFighter.cs" />
     <Compile Include="Assets\Scripts\Core\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Background\PlanetMover.cs" />
     <Compile Include="Assets\Scripts\Background\StarScroller.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreBoard.cs" />
-    <Compile Include="Assets\Scripts\UI\LifePanel.cs" />
-    <Compile Include="Assets\Scripts\UI\GameOverPanel.cs" />
-    <Compile Include="Assets\Scripts\UI\RankLine.cs" />
-    <Compile Include="Assets\Scripts\UI\RankPanel.cs" />
+    <Compile Include="Assets\Scripts\Common\SaveData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

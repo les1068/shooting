@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class RankLine : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    TextMeshProUGUI nameText;
+    TextMeshProUGUI recordText;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        Transform child = transform.GetChild(1);
+        nameText = child.GetComponent<TextMeshProUGUI>();
+        child = transform.GetChild(2);
+        recordText = child.GetComponent<TextMeshProUGUI>();
+    }
+    public void SetData(string rankerName, int record) // 데이터 세팅하는 함수
+    {
+        nameText.text = rankerName;
+        recordText.text = record.ToString("N0");
     }
 }
