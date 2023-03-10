@@ -8,6 +8,4 @@ public class SaveData
 {
     public string[] rankerNames;  // ·©Ä¿ ÀÌ¸§
     public int[] highScores;      // ·©Ä¿µé Á¡¼ö
-    
-
 }

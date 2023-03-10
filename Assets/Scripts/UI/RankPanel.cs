@@ -18,26 +18,8 @@ public class RankPanel : MonoBehaviour
         highScores = new int[size];     // 배열 확보
         rankerNames = new string[size];
 
-        if (!LoadRankingData())         // 파일에서 읽기 시도
-        {
-            for (int i = 0; i < size; i++)    // 파일에서 못 읽었으면 디폴트 값 주기
-            {
-                int result = 1;
-                for(int j = size-i; j >0; j--)
-                {
-                    result *= 10;
-                }
-                highScores[i] = result;  // 10만, 만, 천, 백, 십
-
-                char temp = 'A';
-                temp = (char)((byte)temp + i);
-                rankerNames[i] = $"{temp}{temp}{temp}";    // AAA,BBB,CCC,DDD,EEE
-
-            }
-        }
-        RefreshRankLines();
-
-        SaveRankingData();
+        LoadRankingData();               
+        
     }
     void SaveRankingData()
     {
@@ -47,22 +29,56 @@ public class RankPanel : MonoBehaviour
         SaveData saveData = new(); // 윗줄과 같은 코드(타입을 알 수 있기 때문에 생략한것)
 
         saveData.rankerNames = rankerNames;  // 생성한 인스턴스에 데이터 기록
-        saveData.highScores = highScores;    //
+        saveData.highScores = highScores;    
         
-        string json = JsonUtility.ToJson(saveData);
+        string json = JsonUtility.ToJson(saveData);   // saveData에 있는 내용을 json 양식으로 설정된 string으로 변경
         //Debug.Log(json);
 
-        string path = $"{Application.dataPath}/Save/";
-        if(!Directory.Exists(path))
+        string path = $"{Application.dataPath}/Save/";  // 저장될 경로 구하기(에디터에서는 Assets폴더)
+        if(!Directory.Exists(path))                     // path에 저장된 폴더가 있는지 확인
         {
-            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(path);            // 폴더가 없으면 그 폴더를 만든다.
         }
-        string fullPath = $"{path}Save.json";
-        File.WriteAllText(fullPath, json);
+        string fullPath = $"{path}Save.json";           // 전체 경로 = 폴더 + (Save)파일이름 + (.json)파일확장자
+        File.WriteAllText(fullPath, json);              // fullPath에 json내용 파일로 기록하기
+
     }
     bool LoadRankingData()
     {
-        return false;
+        bool result = false;
+
+        string path = $"{Application.dataPath}/Save/";    // 경로
+        string fullPath = $"{path}Save.json";             // 전체 경로
+
+        result = Directory.Exists(path) && File.Exists(fullPath);  // 폴더와 파일이 있는지 확인        
+
+        if (!result)
+        {
+            // 폴더와 파일이 있으면 읽기
+            string json = File.ReadAllText(fullPath);                 // 텍스트 파일 읽기
+            SaveData loadData = JsonUtility.FromJson<SaveData>(json); // json문자열을 파싱해서 SaveData에 넣기
+            highScores = loadData.highScores;                         // 실제로 최고 점수 넣기
+            rankerNames = loadData.rankerNames;                       // 이름 넣기
+        }
+        else
+        {
+            int size = rankLines.Length;
+            for (int i = 0; i < size; i++)    // 파일에서 못 읽었으면 디폴트 값 주기
+            {
+                int resultScore = 1;
+                for (int j = size - i; j > 0; j--)
+                {
+                    resultScore *= 10;
+                }
+                highScores[i] = resultScore;  // 10만, 만, 천, 백, 십
+
+                char temp = 'A';
+                temp = (char)((byte)temp + i);
+                rankerNames[i] = $"{temp}{temp}{temp}";    // AAA,BBB,CCC,DDD,EEE
+            }
+        }
+        RefreshRankLines();    // 로딩이 되었으니 RankLines 갱신
+        return result;         
     }
     void RefreshRankLines()
     {
