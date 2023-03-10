@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     }
     public Action<int> OnLifeChange;  // 수명이 변경되었을 때 실행될 델리게이트
 
-    public Action onDie;      // 죽었을 때 실행될 델리게이트
+    public Action<Player> onDie;      // 죽었을 때 실행될 델리게이트
 
     private int score = 0;  // 플레이어의 점수
     int power = 0;  // 현재 플레이어의 파워
@@ -384,7 +384,7 @@ public class Player : MonoBehaviour
         rigid.gravityScale = 1.0f;      // 중력 다시 적용
         rigid.freezeRotation = false;   // 회전도 풀기
 
-        onDie?.Invoke();
+        onDie?.Invoke(this);
     }
     public void AddScore(int plus)  // Score에 점수를 추가하는 함수
     {

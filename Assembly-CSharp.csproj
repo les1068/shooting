@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\Common\Player.cs" />
     <Compile Include="Assets\Scripts\Core\PoolObject.cs" />
     <Compile Include="Assets\Scripts\Common\Pool\ExplosionEffectPool.cs" />
+    <Compile Include="Assets\Scripts\Common\Save\SaveData.cs" />
     <Compile Include="Assets\Scripts\Common\Spawner\SpawnerAsteroid.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Asteroid.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\EnemyBase.cs" />
@@ -88,20 +89,20 @@
     <Compile Include="Assets\Scripts\Common\Killzone.cs" />
     <Compile Include="Assets\Scripts\Background\Scroller.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\Effect.cs" />
+    <Compile Include="Assets\Scripts\Common\Save\TestSaveData.cs" />
     <Compile Include="Assets\Scripts\UI\LifePanel.cs" />
     <Compile Include="Assets\Scripts\Common\Factory.cs" />
     <Compile Include="Assets\Scripts\Common\Spawner\SpawnerEnemy.cs" />
     <Compile Include="Assets\Scripts\UI\GameOverPanel.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\PowerUp.cs" />
     <Compile Include="Assets\Scripts\UI\RankPanel.cs" />
+    <Compile Include="Assets\Scripts\Test\Test_GameOver.cs" />
     <Compile Include="Assets\Scripts\Test\Test.cs" />
     <Compile Include="Assets\Scripts\SpawnObjects\SpecialFighter.cs" />
     <Compile Include="Assets\Scripts\Core\ObjectPool.cs" />
     <Compile Include="Assets\Scripts\Background\PlanetMover.cs" />
     <Compile Include="Assets\Scripts\Background\StarScroller.cs" />
     <Compile Include="Assets\Scripts\UI\ScoreBoard.cs" />
-    <Compile Include="Assets\Scripts\Common\SaveData.cs" />
-    <Compile Include="Assets\Scripts\Test\Test_GameOver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
