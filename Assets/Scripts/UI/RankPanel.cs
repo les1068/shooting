@@ -13,9 +13,9 @@ public class RankPanel : MonoBehaviour
     int[] highScores = null;        // 랭킹별 최고점 (0번째가 1등, 4번째가 5등)
     string[] rankerNames = null;    // 랭킹에 들어간 사람 이름  (0번째가 1등, 4번째가 5등)
     int rankCount = 5;              // 최대 랭킹 표시수
-    TMP_InputField inputField;      // inputfield 컴포넌트
     const int NotUpdated = -1;      // 랭킹이 업데이트 되지 않았음을 표시하는 상수
     int updatedIndex = NotUpdated;  // 현재 업데이트 된 랭킹의 인덱스
+    TMP_InputField inputField;      // inputfield 컴포넌트
     private void Awake()
     {
         inputField = GetComponentInChildren<TMP_InputField>();  // 컴포넌트 찾고
@@ -32,7 +32,6 @@ public class RankPanel : MonoBehaviour
         highScores = new int[rankCount];        // 배열 확보
         rankerNames = new string[rankCount];
 
-        LoadRankingData();
 
     }
 
@@ -41,6 +40,8 @@ public class RankPanel : MonoBehaviour
         inputField.gameObject.SetActive(false);     // 시작할 때 인풋 필드 안보이게 만들기
         Player player = FindObjectOfType<Player>();
         player.onDie += RankUpdate;                  // 플레이어가 죽었을 때 랭크 업데이트 시도
+
+        LoadRankingData();   // 데이터 읽기(파일 없으면 디폴트)
     }
     private void OnNameInputEnd(string text)  // 이름 입력이 완료되었을 때 실행되는 함수
     {
@@ -69,7 +70,7 @@ public class RankPanel : MonoBehaviour
                 newPos.y = rankLines[i].transform.position.y;
                 inputField.transform.position = newPos;     // 인풋 필드의 위치를 랭크라인과 같게 만들기
                 //inputField.ActivateInputField();
-                inputField.gameObject.SetActive(true); // 인풋 필드 활성화
+                inputField.gameObject.SetActive(true);  // 인풋 필드 활성화
                 break;   // 랭킹 삽입 될 곳을 찾았으니 중지
             }
         } 

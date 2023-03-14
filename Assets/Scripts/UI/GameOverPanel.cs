@@ -15,11 +15,12 @@ public class GameOverPanel : MonoBehaviour
         anim = GetComponent<Animator>();
         button = GetComponentInChildren<Button>();
         button.onClick.AddListener(OnRestart);   // 버튼 클릭 이벤트에 함수 등록
+
     }
     private void Start()
     {
         Player player = FindObjectOfType<Player>();
-        player.onDie += (_) => { ShowPanel(); };      // 플레이어의 onDie 델리게이트에 함수 등록
+        player.onDie += (_) => ShowPanel();  // 플레이어의 onDie 델리게이트에 함수 등록
         //gameObject.SetActive(false);    // 게임 오브젝트 비활성화
     }
     private void OnRestart()
@@ -33,4 +34,5 @@ public class GameOverPanel : MonoBehaviour
 
         anim.SetTrigger("GameOverStart");
     }
+    
 }
